@@ -48,7 +48,7 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<key>GMSApiKey</key>
-	<string>TUA-CHIAVE-API</string>
+	<string>AIzaSyD1CbD7N7s85dNRKdEVlOyVNxP2IUmnUwU</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Questa app ha bisogno della tua posizione per trovare i distributori più vicini</string>
 	<key>NSLocationAlwaysUsageDescription</key>

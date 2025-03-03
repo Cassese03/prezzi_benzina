@@ -37,6 +37,24 @@ class GasStation {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'bandiera': name,
+      'coordinate': {
+        'lat': latitude,
+        'lon': longitude,
+      },
+      'indirizzo': address.split(', ')[0],
+      'comune': address.split(', ').length > 1 ? address.split(', ')[1] : '',
+      'prezzi': {
+        'benzina': fuelPrices['Benzina'],
+        'diesel': fuelPrices['Diesel'],
+        'gpl': fuelPrices['GPL'],
+      },
+    };
+  }
+
   String getFormattedPrice(String fuelType) {
     final price = fuelPrices[fuelType];
     if (price == null) return 'N/D';

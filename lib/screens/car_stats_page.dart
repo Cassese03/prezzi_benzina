@@ -18,6 +18,7 @@ class _CarStatsPageState extends State<CarStatsPage> {
   final CarStatsService _service = CarStatsService();
   final PreferencesService _prefsService = PreferencesService();
   List<Refueling> _refuelings = [];
+  List<Vehicle> _vehicles = [];
   Vehicle? _selectedVehicle;
   Map<String, double> _statistics = {
     'totalSpent': 0,
@@ -28,25 +29,30 @@ class _CarStatsPageState extends State<CarStatsPage> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadVehicles();
+  }
+
+  Future<void> _loadVehicles() async {
+    final vehicles = await _prefsService.getVehicles();
+    setState(() {
+      _vehicles = vehicles;
+      if (vehicles.isNotEmpty) {
+        _selectedVehicle = vehicles.first;
+        _loadData();
+      }
+    });
   }
 
   Future<void> _loadData() async {
-    final selectedVehicleId = await _prefsService.getSelectedVehicleId();
-    final vehicles = await _prefsService.getVehicles();
-    final selectedVehicle = vehicles.firstWhere(
-      (v) => v.id == selectedVehicleId,
-      orElse: () => vehicles.first,
-    );
+    if (_selectedVehicle == null) return;
 
     final refuelings =
-        await _service.getRefuelingsByVehicle(selectedVehicle.id);
+        await _service.getRefuelingsByVehicle(_selectedVehicle!.id);
 
     final statistics =
-        await _service.getStatisticsByVehicle(selectedVehicle.id);
+        await _service.getStatisticsByVehicle(_selectedVehicle!.id);
 
     setState(() {
-      _selectedVehicle = selectedVehicle;
       _refuelings = refuelings;
       _statistics = statistics;
     });
@@ -213,11 +219,30 @@ class _CarStatsPageState extends State<CarStatsPage> {
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Container(
             color: Theme.of(context).primaryColor.withOpacity(0.1),
-            child: const TabBar(
-              tabs: [
-                Tab(text: 'Riepilogo'),
-                Tab(text: 'Rifornimenti'),
-                Tab(text: 'Grafici'),
+            child: Column(
+              children: [
+                DropdownButton<Vehicle>(
+                  value: _selectedVehicle,
+                  items: _vehicles.map((Vehicle vehicle) {
+                    return DropdownMenuItem<Vehicle>(
+                      value: vehicle,
+                      child: Text('${vehicle.brand} ${vehicle.model}'),
+                    );
+                  }).toList(),
+                  onChanged: (Vehicle? newValue) {
+                    setState(() {
+                      _selectedVehicle = newValue;
+                      _loadData();
+                    });
+                  },
+                ),
+                const TabBar(
+                  tabs: [
+                    Tab(text: 'Riepilogo'),
+                    Tab(text: 'Rifornimenti'),
+                    Tab(text: 'Grafici'),
+                  ],
+                ),
               ],
             ),
           ),
