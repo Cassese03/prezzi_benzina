@@ -48,10 +48,17 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<key>GMSApiKey</key>
-	<string>AIzaSyAoeFZi8N-TrDWIT4D-kFumO5cAvIhvDQU</string>
+	<string>TUA-CHIAVE-API</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Questa app ha bisogno della tua posizione per trovare i distributori più vicini</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Questa app ha bisogno della tua posizione per trovare i distributori più vicini</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+		<string>googlechromes</string>
+		<string>https</string>
+		<string>http</string>
+	</array>
 </dict>
 </plist>

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:label="Pompa Benzina"
@@ -11,7 +11,7 @@
         android:allowBackup="true">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAoeFZi8N-TrDWIT4d-kFumO5cAvIhvDQU" />
+            android:value="TUA-CHIAVE-API" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

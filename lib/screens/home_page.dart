@@ -7,9 +7,11 @@ import '../services/gas_station_service.dart';
 import 'nearest_stations_page.dart';
 import 'cheapest_stations_page.dart';
 import 'average_price_page.dart';
-import 'car_stats_page.dart';
+import 'car_stats_page.dart' as car_stats;
 import '../widgets/settings_drawer.dart';
 import '../services/preferences_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../services/maps_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -105,23 +107,125 @@ class _HomePageState extends State<HomePage> {
   void _showStationDetails(GasStation station) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) => Container(
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(station.name,
-                style: Theme.of(context).textTheme.headlineSmall),
-            Text(station.address),
-            const SizedBox(height: 8),
-            ...station.fuelPrices.entries.map(
-              (e) => Text('${e.key}: €${e.value.toStringAsFixed(3)}'),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(station.name,
+                          style: Theme.of(context).textTheme.headlineSmall),
+                      Text(station.address),
+                      const SizedBox(height: 8),
+                      ...station.fuelPrices.entries.map(
+                        (e) => Text('${e.key}: €${e.value.toStringAsFixed(3)}'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+                // Immagine della stazione
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    MapsService.getPlacePhotoUrl(
+                      station.latitude,
+                      station.longitude,
+                    ),
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const SizedBox(
+                        width: 150,
+                        height: 150,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 150,
+                        height: 150,
+                        color: Colors.grey[200],
+                        child: const Icon(Icons.local_gas_station, size: 50),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Mappa statica
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                MapsService.getStaticMapUrl(
+                  station.latitude,
+                  station.longitude,
+                ),
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const SizedBox(
+                    height: 200,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return const SizedBox(
+                    height: 200,
+                    child: Center(child: Icon(Icons.error)),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Pulsante Google Maps
+            InkWell(
+              onTap: () => _openMaps(station),
+              child: Row(
+                children: [
+                  const Icon(Icons.map, color: Colors.blue),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Apri in Google Maps',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _openMaps(GasStation station) async {
+    final url = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=${station.latitude},${station.longitude}',
+    );
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Impossibile aprire le mappe'),
+        ),
+      );
+    }
   }
 
   @override
@@ -178,7 +282,7 @@ class _HomePageState extends State<HomePage> {
                         onStationSelected: _selectStation,
                       ),
                       AveragePricePage(stations: _stations),
-                      const CarStatsPage(),
+                      const car_stats.CarStatsPage(),
                     ],
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/preferences_service.dart';
+import '../screens/vehicles_page.dart';
 
 class SettingsDrawer extends StatefulWidget {
   final Function() onSettingsChanged;
@@ -61,6 +62,23 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                 ),
               ],
             ),
+          ),
+          ExpansionTile(
+            leading: const Icon(Icons.directions_car),
+            title: const Text('Veicoli'),
+            children: [
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Gestisci veicoli'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const VehiclesPage()),
+                  ).then((_) => widget.onSettingsChanged());
+                },
+              ),
+            ],
           ),
           ListTile(
             title: const Text('Valuta'),
