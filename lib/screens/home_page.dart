@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +15,7 @@ import '../services/preferences_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/maps_service.dart';
 import 'dart:developer' as developer;
+import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -41,10 +43,7 @@ class _HomePageState extends State<HomePage> {
   GoogleMapController? _mapController;
   Set<Marker> _markers = {};
 
-  // Coordinate fisse da usare sempre
-  final LatLng _fixedPosition =
-      const LatLng(40.9322765492642, 14.528412503688312);
-  LatLng _currentPosition = const LatLng(40.9322765492642, 14.528412503688312);
+  LatLng _currentPosition = const LatLng(0, 0); // Default position
 
   int _selectedIndex = 0;
 
@@ -52,35 +51,65 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadVehicles();
-    _initializeDirectly();
+    _getCurrentLocation(); // Nuovo metodo per ottenere la posizione
   }
 
-  Future<void> _initializeDirectly() async {
+  Future<void> _getCurrentLocation() async {
     try {
       setState(() => _isLoading = true);
-      await _loadFirst10StationsDirectly();
-    } catch (e) {
-      logError('Errore nell\'inizializzazione diretta: $e');
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
+
+      // Richiedi il permesso di geolocalizzazione
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          throw Exception('Permesso di geolocalizzazione negato');
+        }
       }
+
+      // Ottieni la posizione corrente
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // Aggiorna la posizione corrente
+      setState(() {
+        _currentPosition = LatLng(position.latitude, position.longitude);
+      });
+
+      // Carica le stazioni vicine
+      await _loadNearbyStations();
+    } catch (e) {
+      logError('Errore nella geolocalizzazione: $e');
+      // Fallback su una posizione di default o mostra un errore
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Impossibile ottenere la posizione corrente'),
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  Future<void> _loadFirst10StationsDirectly() async {
+  Future<void> _loadNearbyStations() async {
     try {
-      final stations = await _service.getFirst10Stations();
+      int distance = await _prefsService.getSearchRadius();
+      final stations = await _service.getGasStations(
+        _currentPosition.latitude,
+        _currentPosition.longitude,
+        distance, // raggio in km
+      );
+
       if (mounted && stations.isNotEmpty) {
         setState(() {
           _stations = stations;
           _markers = _createMarkersFromStations(stations);
-          _currentPosition = _fixedPosition;
         });
 
-        // Centra la mappa sulle coordinate fisse
+        // Centra la mappa sulla posizione corrente
         _mapController?.animateCamera(
-          CameraUpdate.newLatLngZoom(_fixedPosition, 14.0),
+          CameraUpdate.newLatLngZoom(_currentPosition, 14.0),
         );
       }
     } catch (e) {
@@ -397,7 +426,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _initializeDirectly,
+            onPressed: _getCurrentLocation, // Usa il nuovo metodo
           ),
         ],
       ),
@@ -405,7 +434,7 @@ class _HomePageState extends State<HomePage> {
         onSettingsChanged: () async {
           if (mounted) {
             setState(() => _isLoading = true);
-            await _loadFirst10StationsDirectly(); // Ricarica i dati
+            await _loadNearbyStations(); // Ricarica i dati
             setState(() => _isLoading = false);
           }
         },

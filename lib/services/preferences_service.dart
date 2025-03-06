@@ -6,6 +6,7 @@ class PreferencesService {
   static const String _fuelTypeKey = 'fuelType';
   static const String _vehiclesKey = 'vehicles';
   static const String _selectedVehicleKey = 'selected_vehicle';
+  static const String _searchRadiusKey = 'search_radius';
 
   static const List<String> availableFuelTypes = [
     'Benzina',
@@ -13,6 +14,8 @@ class PreferencesService {
     'GPL',
     'Metano'
   ];
+
+  static const List<int> availableRadiusValues = [5, 10, 20, 30, 50];
 
   Future<void> setPreferredFuelType(String fuelType) async {
     final prefs = await SharedPreferences.getInstance();
@@ -70,5 +73,15 @@ class PreferencesService {
   Future<void> setSelectedVehicleId(String id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_selectedVehicleKey, id);
+  }
+
+  Future<void> setSearchRadius(int radius) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_searchRadiusKey, radius);
+  }
+
+  Future<int> getSearchRadius() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_searchRadiusKey) ?? 5; // Default 5km
   }
 }

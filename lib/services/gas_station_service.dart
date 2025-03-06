@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/gas_station.dart';
 
 class GasStationService {
@@ -26,11 +27,9 @@ class GasStationService {
   }
 
   Future<List<GasStation>> getFirst10Stations() async {
-    // Usa le coordinate fisse e una distanza di 5km
-    return getGasStations(
-        40.9322765492642, // Latitudine fissa
-        14.528412503688312, // Longitudine fissa
-        5 // Distanza in km
-        );
+    final prefs = await SharedPreferences.getInstance();
+    final searchRadius = prefs.getInt('search_radius') ?? 5;
+
+    return getGasStations(40.9322765492642, 14.528412503688312, searchRadius);
   }
 }

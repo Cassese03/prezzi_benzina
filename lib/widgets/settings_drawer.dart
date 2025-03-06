@@ -15,6 +15,7 @@ class SettingsDrawer extends StatefulWidget {
 class _SettingsDrawerState extends State<SettingsDrawer> {
   final PreferencesService _prefsService = PreferencesService();
   String _selectedFuelType = 'Benzina';
+  int _searchRadius = 5;
 
   @override
   void initState() {
@@ -24,8 +25,10 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
 
   Future<void> _loadPreferences() async {
     final fuelType = await _prefsService.getPreferredFuelType();
+    final radius = await _prefsService.getSearchRadius();
     setState(() {
       _selectedFuelType = fuelType;
+      _searchRadius = radius;
     });
   }
 
@@ -76,6 +79,12 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
             trailing: const Icon(Icons.local_gas_station),
             onTap: () => _showFuelTypePicker(context),
           ),
+          ListTile(
+            title: const Text('Raggio di ricerca'),
+            subtitle: Text('$_searchRadius km'),
+            trailing: const Icon(Icons.map),
+            onTap: () => _showRadiusSelector(context),
+          ),
         ],
       ),
     );
@@ -117,6 +126,35 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                           ),
                         );
                       }
+                    }
+                  },
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  void _showRadiusSelector(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Seleziona raggio di ricerca'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: PreferencesService.availableRadiusValues
+              .map(
+                (radius) => RadioListTile<int>(
+                  title: Text('$radius km'),
+                  value: radius,
+                  groupValue: _searchRadius,
+                  onChanged: (value) async {
+                    if (value != null) {
+                      await _prefsService.setSearchRadius(value);
+                      setState(() => _searchRadius = value);
+                      widget.onSettingsChanged();
+                      Navigator.pop(context);
                     }
                   },
                 ),
