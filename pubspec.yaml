@@ -37,9 +37,7 @@ dependencies:
   url_launcher: ^6.1.14
   fl_chart: ^0.65.0
   csv: ^5.1.1
-  path_provider: ^2.1.1
   file_picker: ^5.3.0  # Aggiungi questa dipendenza per selezionare i file
-  permission_handler: ^10.2.0  # Aggiungi questa dipendenza per gestire i permessi
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

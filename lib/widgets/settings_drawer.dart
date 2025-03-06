@@ -14,7 +14,6 @@ class SettingsDrawer extends StatefulWidget {
 
 class _SettingsDrawerState extends State<SettingsDrawer> {
   final PreferencesService _prefsService = PreferencesService();
-  String _selectedCurrency = 'EUR';
   String _selectedFuelType = 'Benzina';
 
   @override
@@ -24,10 +23,8 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
   }
 
   Future<void> _loadPreferences() async {
-    final currency = await _prefsService.getCurrency();
     final fuelType = await _prefsService.getPreferredFuelType();
     setState(() {
-      _selectedCurrency = currency;
       _selectedFuelType = fuelType;
     });
   }
@@ -63,28 +60,15 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
               ],
             ),
           ),
-          ExpansionTile(
-            leading: const Icon(Icons.directions_car),
-            title: const Text('Veicoli'),
-            children: [
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Gestisci veicoli'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const VehiclesPage()),
-                  ).then((_) => widget.onSettingsChanged());
-                },
-              ),
-            ],
-          ),
           ListTile(
-            title: const Text('Valuta'),
-            subtitle: Text('Attuale: $_selectedCurrency'),
-            trailing: const Icon(Icons.currency_exchange),
-            onTap: () => _showCurrencyPicker(context),
+            leading: const Icon(Icons.directions_car),
+            title: const Text('Gestisci veicoli'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const VehiclesPage()),
+              ).then((_) => widget.onSettingsChanged());
+            },
           ),
           ListTile(
             title: const Text('Tipo Carburante'),
@@ -93,35 +77,6 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
             onTap: () => _showFuelTypePicker(context),
           ),
         ],
-      ),
-    );
-  }
-
-  void _showCurrencyPicker(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Seleziona Valuta'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: PreferencesService.availableCurrencies
-              .map(
-                (currency) => RadioListTile<String>(
-                  title: Text(currency),
-                  value: currency,
-                  groupValue: _selectedCurrency,
-                  onChanged: (value) async {
-                    if (value != null) {
-                      await _prefsService.setCurrency(value);
-                      setState(() => _selectedCurrency = value);
-                      widget.onSettingsChanged();
-                      Navigator.pop(context);
-                    }
-                  },
-                ),
-              )
-              .toList(),
-        ),
       ),
     );
   }
@@ -143,8 +98,25 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                     if (value != null) {
                       await _prefsService.setPreferredFuelType(value);
                       setState(() => _selectedFuelType = value);
-                      widget.onSettingsChanged();
+
+                      // Chiudi il dialog
                       Navigator.pop(context);
+                      // Chiudi il drawer
+                      Navigator.pop(context);
+
+                      // Trigger del refresh completo
+                      widget.onSettingsChanged();
+
+                      // Mostra feedback all'utente
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text('Tipo carburante cambiato in: $value'),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
                     }
                   },
                 ),

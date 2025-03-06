@@ -10,18 +10,27 @@ class AveragePricePage extends StatelessWidget {
   }) : super(key: key);
 
   Map<String, double> _calculateAveragePrices() {
-    Map<String, double> averages = {};
+    Map<String, double> sums = {};
     Map<String, int> counts = {};
 
+    // Calcola le somme e conta solo i prezzi validi
     for (var station in stations) {
-      station.fuelPrices.forEach((fuelType, price) {
-        averages[fuelType] = (averages[fuelType] ?? 0) + price;
-        counts[fuelType] = (counts[fuelType] ?? 0) + 1;
+      station.fuelPrices.forEach((fuelType, priceInfo) {
+        final price = priceInfo.self > 0 ? priceInfo.self : priceInfo.servito;
+        if (price > 0) {
+          // Conta solo se il prezzo è valido
+          sums[fuelType] = (sums[fuelType] ?? 0) + price;
+          counts[fuelType] = (counts[fuelType] ?? 0) + 1;
+        }
       });
     }
 
-    averages.forEach((fuelType, total) {
-      averages[fuelType] = total / (counts[fuelType] ?? 1);
+    // Calcola le medie solo per i tipi di carburante con prezzi validi
+    Map<String, double> averages = {};
+    sums.forEach((fuelType, total) {
+      if (counts[fuelType]! > 0) {
+        averages[fuelType] = total / counts[fuelType]!;
+      }
     });
 
     return averages;
@@ -29,39 +38,34 @@ class AveragePricePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final averagePrices = _calculateAveragePrices();
+    if (stations.isEmpty) {
+      return const Center(child: Text('Nessuna stazione disponibile'));
+    }
 
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Prezzi medi',
-                    style: Theme.of(context).textTheme.headlineSmall),
-                const SizedBox(height: 16),
-                ...averagePrices.entries
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(e.key),
-                              Text('€${e.value.toStringAsFixed(3)}',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ))
-                    .toList(),
-              ],
+    final averages = _calculateAveragePrices();
+    final sortedFuelTypes = averages.keys.toList()
+      ..sort((a, b) => averages[a]!.compareTo(averages[b]!));
+
+    return ListView.builder(
+      itemCount: sortedFuelTypes.length,
+      padding: const EdgeInsets.all(8),
+      itemBuilder: (context, index) {
+        final fuelType = sortedFuelTypes[index];
+        final average = averages[fuelType]!;
+
+        return Card(
+          child: ListTile(
+            title: Text(fuelType),
+            trailing: Text(
+              '€${average.toStringAsFixed(3)}',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

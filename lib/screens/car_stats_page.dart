@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pompa_benzina/widgets/refueling_list_view.dart';
 import 'dart:core';
 import '../models/refueling.dart';
 import '../services/car_stats_service.dart';
@@ -18,8 +19,8 @@ class _CarStatsPageState extends State<CarStatsPage> {
   final CarStatsService _service = CarStatsService();
   final PreferencesService _prefsService = PreferencesService();
   List<Refueling> _refuelings = [];
-  List<Vehicle> _vehicles = [];
   Vehicle? _selectedVehicle;
+  List<Vehicle> _vehicles = [];
   Map<String, double> _statistics = {
     'totalSpent': 0,
     'averageConsumption': 0,
@@ -35,7 +36,6 @@ class _CarStatsPageState extends State<CarStatsPage> {
   Future<void> _loadVehicles() async {
     final vehicles = await _prefsService.getVehicles();
     setState(() {
-      _vehicles = vehicles;
       if (vehicles.isNotEmpty) {
         _selectedVehicle = vehicles.first;
         _loadData();
@@ -215,45 +215,83 @@ class _CarStatsPageState extends State<CarStatsPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: Container(
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
-            child: Column(
-              children: [
-                DropdownButton<Vehicle>(
-                  value: _selectedVehicle,
-                  items: _vehicles.map((Vehicle vehicle) {
-                    return DropdownMenuItem<Vehicle>(
-                      value: vehicle,
-                      child: Text('${vehicle.brand} ${vehicle.model}'),
-                    );
-                  }).toList(),
-                  onChanged: (Vehicle? newValue) {
-                    setState(() {
-                      _selectedVehicle = newValue;
-                      _loadData();
-                    });
-                  },
+        body: Column(
+          children: [
+            // Aggiungi il selettore del veicolo qui
+            if (_vehicles.isNotEmpty)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  ),
                 ),
-                const TabBar(
-                  tabs: [
-                    Tab(text: 'Riepilogo'),
-                    Tab(text: 'Rifornimenti'),
-                    Tab(text: 'Grafici'),
+                child: Row(
+                  children: [
+                    const Icon(Icons.directions_car, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<Vehicle>(
+                          isExpanded: true,
+                          value: _selectedVehicle,
+                          items: _vehicles.map((Vehicle vehicle) {
+                            return DropdownMenuItem<Vehicle>(
+                              value: vehicle,
+                              child: Text(
+                                '${vehicle.brand} ${vehicle.model}',
+                                style: const TextStyle(fontSize: 14),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (Vehicle? newValue) {
+                            setState(() {
+                              _selectedVehicle = newValue;
+                              _loadData(); // Ricarica i dati quando cambia il veicolo
+                            });
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
+              ),
+
+            // TabBar esistente
+            TabBar(
+              labelColor: Theme.of(context).primaryColor,
+              tabs: const [
+                Tab(text: 'Riepilogo'),
+                Tab(text: 'Rifornimenti'),
+                Tab(text: 'Grafici'),
               ],
             ),
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            _buildSummaryTab(),
-            _buildRefuelingsTab(),
-            FuelStatisticsCharts(
-              refuelings: _refuelings,
-              selectedVehicle: _selectedVehicle,
+
+            // TabBarView esistente
+            Expanded(
+              child: TabBarView(
+                children: [
+                  // Riepilogo
+                  _buildSummaryTab(),
+                  // Lista rifornimenti
+                  RefuelingListView(
+                    refuelings: _refuelings,
+                    onTap: _showRefuelingDetails,
+                  ),
+                  // Grafici
+                  SingleChildScrollView(
+                    child: FuelStatisticsCharts(
+                      refuelings: _refuelings,
+                      selectedVehicle: _selectedVehicle,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -271,62 +309,69 @@ class _CarStatsPageState extends State<CarStatsPage> {
         : 0.0;
 
     return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (_selectedVehicle != null)
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Card(
-                child: ListTile(
-                  leading: const Icon(Icons.directions_car),
-                  title: Text(_selectedVehicle!.name),
-                  subtitle: Text(
-                    '${_selectedVehicle!.brand} ${_selectedVehicle!.model} (${_selectedVehicle!.year})',
-                  ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.directions_car),
+                title: Text(_selectedVehicle!.name),
+                subtitle: Text(
+                  '${_selectedVehicle!.brand} ${_selectedVehicle!.model} (${_selectedVehicle!.year})',
                 ),
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Wrap(
-              spacing: 16,
-              runSpacing: 16,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: _StatCard(
+          const SizedBox(height: 16),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  _StatCard(
                     title: 'Spesa Totale',
                     value: '€${_statistics['totalSpent']?.toStringAsFixed(2)}',
                     icon: Icons.euro,
                   ),
-                ),
-                Flexible(
-                  child: _StatCard(
+                  const Divider(),
+                  _StatCard(
                     title: 'Consumo Medio',
                     value:
                         '${_statistics['averageConsumption']?.toStringAsFixed(1)} L/100km',
                     icon: Icons.local_gas_station,
                   ),
-                ),
-                Flexible(
-                  child: _StatCard(
+                  const Divider(),
+                  _StatCard(
                     title: 'Prezzo Medio',
                     value:
                         '€${_statistics['averagePrice']?.toStringAsFixed(3)}/L',
                     icon: Icons.price_check,
                   ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: _StatCard(
+                  const Divider(),
+                  _StatCard(
                     title: 'Chilometri Totali',
                     value: '${totalKmDriven.toStringAsFixed(0)} km',
                     icon: Icons.route,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+          if (_refuelings.isEmpty)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(32),
+                child: Text(
+                  'Nessun rifornimento registrato.\nPremi + per aggiungerne uno.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -448,22 +493,27 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Icon(icon, size: 40),
-            const SizedBox(width: 16),
-            Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 24, color: Theme.of(context).primaryColor),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: Theme.of(context).textTheme.titleMedium),
-                Text(value, style: Theme.of(context).textTheme.headlineSmall),
+                Text(title, style: Theme.of(context).textTheme.bodyMedium),
+                Text(
+                  value,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

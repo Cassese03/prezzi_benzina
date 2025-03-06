@@ -19,7 +19,6 @@ class NearestStationsPage extends StatefulWidget {
 class _NearestStationsPageState extends State<NearestStationsPage> {
   final PreferencesService _prefsService = PreferencesService();
   String _currentFuelType = 'Benzina';
-  String _currentCurrency = 'EUR';
 
   @override
   void initState() {
@@ -29,47 +28,71 @@ class _NearestStationsPageState extends State<NearestStationsPage> {
 
   Future<void> _loadPreferences() async {
     final fuelType = await _prefsService.getPreferredFuelType();
-    final currency = await _prefsService.getCurrency();
-    setState(() {
-      _currentFuelType = fuelType;
-      _currentCurrency = currency;
-    });
+    if (mounted) {
+      setState(() {
+        _currentFuelType = fuelType;
+      });
+    }
   }
 
   String _formatPrice(GasStation station) {
-    double? price = station.fuelPrices[_currentFuelType];
-    if (price == null) return 'N/D';
+    final priceInfo = station.fuelPrices[_currentFuelType];
+    if (priceInfo == null) return 'N/D';
 
-    if (_currentCurrency != 'EUR') {
-      price = _prefsService.convertCurrency(price, _currentCurrency);
-    }
+    // Prendi il prezzo self service se disponibile, altrimenti servito
+    final price = priceInfo.self > 0 ? priceInfo.self : priceInfo.servito;
 
-    return '${_currentCurrency == 'EUR' ? '€' : _currentCurrency} ${price.toStringAsFixed(3)}';
+    return '€${price.toStringAsFixed(3)}';
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.stations.isEmpty) {
+      return const Center(
+        child: Text('Nessuna stazione disponibile'),
+      );
+    }
+
     final sortedStations = List<GasStation>.from(widget.stations)
-      ..sort((a, b) => (a.latitude - b.latitude)
-          .abs()
-          .compareTo((b.latitude - b.latitude).abs()));
+      ..sort((a, b) {
+        final priceA = a.getLowestPrice(_currentFuelType) ?? double.infinity;
+        final priceB = b.getLowestPrice(_currentFuelType) ?? double.infinity;
+        return priceA.compareTo(priceB);
+      });
 
     return ListView.builder(
       itemCount: sortedStations.length,
       itemBuilder: (context, index) {
         final station = sortedStations[index];
         return Card(
-          margin: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           child: ListTile(
-            title: Text(station.name),
-            subtitle: Text(station.address),
+            title: Text(
+              station.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(station.address),
+                if (station.gestore.isNotEmpty)
+                  Text(
+                    station.gestore,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+              ],
+            ),
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(_currentFuelType),
                 Text(
                   _formatPrice(station),
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),
