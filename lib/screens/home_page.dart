@@ -10,12 +10,15 @@ import 'nearest_stations_page.dart';
 import 'cheapest_stations_page.dart';
 import 'average_price_page.dart';
 import 'car_stats_page.dart' as car_stats;
-import '../widgets/settings_drawer.dart';
 import '../services/preferences_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/maps_service.dart';
 import 'dart:developer' as developer;
 import 'package:geolocator/geolocator.dart';
+import 'settings_page.dart';
+import 'splash_screen.dart';
+import '../widgets/animated_title.dart';
+import '../widgets/responsive_app_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,13 +28,13 @@ class HomePage extends StatefulWidget {
 }
 
 // Funzione helper per log colorati
-void logInfo(String message) {
-  developer.log('\x1B[33m$message\x1B[0m', name: 'HOME_PAGE');
-}
+// void logInfo(String message) {
+//   developer.log('\x1B[33m$message\x1B[0m', name: 'HOME_PAGE');
+// }
 
-void logError(String message) {
-  developer.log('\x1B[31m$message\x1B[0m', name: 'HOME_PAGE_ERROR');
-}
+// void logError(String message) {
+//   developer.log('\x1B[31m$message\x1B[0m', name: 'HOME_PAGE_ERROR');
+// }
 
 class _HomePageState extends State<HomePage> {
   final GasStationService _service = GasStationService();
@@ -80,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       // Carica le stazioni vicine
       await _loadNearbyStations();
     } catch (e) {
-      logError('Errore nella geolocalizzazione: $e');
+      //  logError('Errore nella geolocalizzazione: $e');
       // Fallback su una posizione di default o mostra un errore
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -113,7 +116,7 @@ class _HomePageState extends State<HomePage> {
         );
       }
     } catch (e) {
-      logError('Errore nel caricamento stazioni: $e');
+      //logError('Errore nel caricamento stazioni: $e');
     }
   }
 
@@ -421,26 +424,27 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trova Benzina Economica'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _getCurrentLocation, // Usa il nuovo metodo
-          ),
-        ],
-      ),
-      drawer: SettingsDrawer(
-        onSettingsChanged: () async {
-          if (mounted) {
-            setState(() => _isLoading = true);
-            await _loadNearbyStations(); // Ricarica i dati
-            setState(() => _isLoading = false);
-          }
+      appBar: ResponsiveAppBar(
+        onRefresh: _getCurrentLocation,
+        onSettings: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SettingsPage(
+                onSettingsChanged: () async {
+                  if (mounted) {
+                    setState(() => _isLoading = true);
+                    await _loadNearbyStations();
+                    setState(() => _isLoading = false);
+                  }
+                },
+              ),
+            ),
+          );
         },
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const SplashScreen(isLoading: true) // Modifica qui
           : Column(
               children: [
                 // Mappa (ridotta leggermente)
@@ -481,31 +485,33 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'KM VICINI',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.euro),
-            label: 'PIÙ ECONOMICI',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
-            label: 'PREZZO MEDIO',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.directions_car),
-            label: 'STATISTICHE',
-          ),
-        ],
-        onTap: (index) => setState(() => _selectedIndex = index),
-      ),
+      bottomNavigationBar: _isLoading
+          ? null // Nascondi la bottom bar durante il caricamento
+          : BottomNavigationBar(
+              currentIndex: _selectedIndex,
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: Theme.of(context).primaryColor,
+              unselectedItemColor: Colors.grey,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.location_on),
+                  label: 'KM VICINI',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.euro),
+                  label: 'PIÙ ECONOMICI',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.analytics),
+                  label: 'PREZZO MEDIO',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.directions_car),
+                  label: 'STATISTICHE',
+                ),
+              ],
+              onTap: (index) => setState(() => _selectedIndex = index),
+            ),
     );
   }
 

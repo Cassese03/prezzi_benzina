@@ -53,12 +53,7 @@ class _NearestStationsPageState extends State<NearestStationsPage> {
       );
     }
 
-    final sortedStations = List<GasStation>.from(widget.stations)
-      ..sort((a, b) {
-        final priceA = a.getLowestPrice(_currentFuelType) ?? double.infinity;
-        final priceB = b.getLowestPrice(_currentFuelType) ?? double.infinity;
-        return priceA.compareTo(priceB);
-      });
+    final sortedStations = List<GasStation>.from(widget.stations);
 
     return ListView.builder(
       itemCount: sortedStations.length,

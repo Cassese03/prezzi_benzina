@@ -17,7 +17,7 @@
                      tools:ignore="ScopedStorage" />
     
     <application
-        android:label="Pompa Benzina"
+        android:label="CarMate"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"

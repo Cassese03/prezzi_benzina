@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import '../services/preferences_service.dart';
-import '../screens/vehicles_page.dart';
+import 'vehicles_page.dart';
 
-class SettingsDrawer extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   final Function() onSettingsChanged;
 
-  const SettingsDrawer({Key? key, required this.onSettingsChanged})
+  const SettingsPage({Key? key, required this.onSettingsChanged})
       : super(key: key);
 
   @override
-  State<SettingsDrawer> createState() => _SettingsDrawerState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsDrawerState extends State<SettingsDrawer> {
+class _SettingsPageState extends State<SettingsPage> {
   final PreferencesService _prefsService = PreferencesService();
   String _selectedFuelType = 'Benzina';
   int _searchRadius = 5;
@@ -34,35 +34,12 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Impostazioni'),
+      ),
+      body: ListView(
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Impostazioni',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Personalizza la tua esperienza',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
           ListTile(
             leading: const Icon(Icons.directions_car),
             title: const Text('Gestisci veicoli'),
@@ -74,15 +51,15 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.local_gas_station),
             title: const Text('Tipo Carburante'),
             subtitle: Text('Attuale: $_selectedFuelType'),
-            trailing: const Icon(Icons.local_gas_station),
             onTap: () => _showFuelTypePicker(context),
           ),
           ListTile(
+            leading: const Icon(Icons.map),
             title: const Text('Raggio di ricerca'),
             subtitle: Text('$_searchRadius km'),
-            trailing: const Icon(Icons.map),
             onTap: () => _showRadiusSelector(context),
           ),
         ],
