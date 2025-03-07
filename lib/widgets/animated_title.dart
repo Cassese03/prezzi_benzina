@@ -66,7 +66,7 @@ class _AnimatedTitleState extends State<AnimatedTitle>
                 width: 60,
                 height: 40,
                 child: Image.asset(
-                  'assets/videos/title_animation.gif',
+                  'assets/images/title_animation.gif', // Modificato il percorso qui
                   fit: BoxFit.contain,
                 ),
               ),

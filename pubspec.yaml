@@ -72,9 +72,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/logo.png
-    - assets/videos/title_animation.gif  # Aggiungi questa riga
-    - assets/videos/
-
+    - assets/images/title_animation.gif
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
