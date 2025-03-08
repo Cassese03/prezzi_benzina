@@ -27,8 +27,8 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
           fit: BoxFit.contain,
         ),
       ),
-      title: const Expanded(
-        child: Center(child: AnimatedTitle()),
+      title: const Center(
+        child: AnimatedTitle(),
       ),
       actions: [
         IconButton(
