@@ -13,6 +13,7 @@ class VehiclesPage extends StatefulWidget {
 class _VehiclesPageState extends State<VehiclesPage> {
   final PreferencesService _prefsService = PreferencesService();
   List<Vehicle> _vehicles = [];
+  // ignore: unused_field
   String? _selectedVehicleId;
 
   @override

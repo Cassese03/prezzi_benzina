@@ -25,7 +25,7 @@
         android:requestLegacyExternalStorage="true">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="MAPS-API-KEY" />
+            android:value="maps-api-key" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

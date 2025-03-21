@@ -48,7 +48,7 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<key>GMSApiKey</key>
-	<string>MAPS-API-KEY</string>
+	<string>maps-api-key</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Questa app ha bisogno della tua posizione per trovare i distributori più vicini</string>
 	<key>NSLocationAlwaysUsageDescription</key>

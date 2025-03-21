@@ -1,5 +1,5 @@
 class MapsService {
-  static const String apiKey = 'MAPS-API-KEY';
+  static const String apiKey = 'maps-api-key';
 
   static String getStaticMapUrl(double lat, double lng,
       {int zoom = 15, int width = 400, int height = 200}) {

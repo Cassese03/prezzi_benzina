@@ -377,6 +377,7 @@ class _CarStatsPageState extends State<CarStatsPage> {
     );
   }
 
+  // ignore: unused_element
   Widget _buildRefuelingsTab() {
     if (_refuelings.isEmpty) {
       return const Center(
@@ -469,6 +470,7 @@ class _CarStatsPageState extends State<CarStatsPage> {
     );
   }
 
+  // ignore: unused_element
   Widget _buildChartsTab() {
     if (_refuelings.isEmpty) {
       return const Center(

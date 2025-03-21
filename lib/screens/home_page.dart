@@ -13,11 +13,9 @@ import 'car_stats_page.dart' as car_stats;
 import '../services/preferences_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/maps_service.dart';
-import 'dart:developer' as developer;
 import 'package:geolocator/geolocator.dart';
 import 'settings_page.dart';
 import 'splash_screen.dart';
-import '../widgets/animated_title.dart';
 import '../widgets/responsive_app_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +38,9 @@ class _HomePageState extends State<HomePage> {
   final GasStationService _service = GasStationService();
   final PreferencesService _prefsService = PreferencesService();
   List<GasStation> _stations = [];
+  // ignore: unused_field
   List<Vehicle> _vehicles = [];
+  // ignore: unused_field
   Vehicle? _selectedVehicle;
   bool _isLoading = false;
   GoogleMapController? _mapController;
