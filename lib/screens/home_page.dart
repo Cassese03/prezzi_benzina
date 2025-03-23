@@ -443,48 +443,93 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-      body: _isLoading
-          ? const SplashScreen(isLoading: true) // Modifica qui
-          : Column(
-              children: [
-                // Mappa (ridotta leggermente)
-                Expanded(
-                  flex: 3,
-                  child: ClipRRect(
-                    child: GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: _currentPosition,
-                        zoom: 14,
-                      ),
-                      markers: _markers,
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: true,
-                      onMapCreated: (controller) => _mapController = controller,
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: _currentPosition,
+              zoom: 14,
+            ),
+            markers: _markers,
+            myLocationEnabled: true,
+            myLocationButtonEnabled: true,
+            onMapCreated: (controller) => _mapController = controller,
+          ),
+          NotificationListener<DraggableScrollableNotification>(
+            onNotification: (notification) {
+              // Debug print per verificare se le gesture vengono rilevate
+              print('Scroll fraction: ${notification.extent}');
+              return true;
+            },
+            child: DraggableScrollableSheet(
+              initialChildSize: 0.4,
+              minChildSize: 0.1,
+              maxChildSize: 0.9,
+              snap: true, // Aggiunto snap per migliore feedback
+              snapSizes: const [0.1, 0.4, 0.9], // Punti di snap definiti
+              builder: (context, scrollController) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
                     ),
-                  ),
-                ),
-
-                // Tab content con flex ridotto
-                Expanded(
-                  flex: 2,
-                  child: IndexedStack(
-                    index: _selectedIndex,
-                    children: [
-                      NearestStationsPage(
-                        stations: _stations,
-                        onStationSelected: _selectStation,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 10,
                       ),
-                      CheapestStationsPage(
-                        stations: _stations,
-                        onStationSelected: _selectStation,
-                      ),
-                      AveragePricePage(stations: _stations),
-                      const car_stats.CarStatsPage(),
                     ],
                   ),
-                ),
-              ],
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            // Handle bar migliorato
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Container(
+                                height: 5,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(2.5),
+                                ),
+                              ),
+                            ),
+                            // Content
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              child: IndexedStack(
+                                index: _selectedIndex,
+                                children: [
+                                  NearestStationsPage(
+                                    stations: _stations,
+                                    onStationSelected: _selectStation,
+                                  ),
+                                  CheapestStationsPage(
+                                    stations: _stations,
+                                    onStationSelected: _selectStation,
+                                  ),
+                                  AveragePricePage(stations: _stations),
+                                  const car_stats.CarStatsPage(),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
+          ),
+        ],
+      ),
       bottomNavigationBar: _isLoading
           ? null // Nascondi la bottom bar durante il caricamento
           : BottomNavigationBar(
