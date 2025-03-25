@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
+import 'package:pompa_benzina/services/ad_service.dart';
 import 'dart:async';
 import '../models/gas_station.dart';
 import '../models/vehicle.dart';
@@ -15,6 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../services/maps_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'settings_page.dart';
+// ignore: unused_import
 import 'splash_screen.dart';
 import '../widgets/responsive_app_bar.dart';
 
@@ -42,9 +45,12 @@ class _HomePageState extends State<HomePage> {
   List<Vehicle> _vehicles = [];
   // ignore: unused_field
   Vehicle? _selectedVehicle;
+  // ignore: unused_field
   bool _isLoading = false;
   GoogleMapController? _mapController;
   Set<Marker> _markers = {};
+  BannerAd? _bannerAd;
+  bool _isBannerAdReady = false;
 
   LatLng _currentPosition = const LatLng(0, 0); // Default position
 
@@ -55,6 +61,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _loadVehicles();
     _getCurrentLocation(); // Nuovo metodo per ottenere la posizione
+    _loadBannerAd();
   }
 
   Future<void> _getCurrentLocation() async {
@@ -123,6 +130,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _mapController?.dispose();
+    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -136,6 +144,22 @@ class _HomePageState extends State<HomePage> {
         }
       });
     }
+  }
+
+  void _loadBannerAd() {
+    _bannerAd = AdService.createBannerAd()
+      ..load().then((value) {
+        if (mounted) {
+          // Verifica che il widget sia ancora montato
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        }
+      }).catchError((error) {
+        print('Errore nel caricamento del banner: $error');
+        _isBannerAdReady = false;
+        _bannerAd = null;
+      });
   }
 
   // Metodo per creare markers dalle stazioni
@@ -530,33 +554,43 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: _isLoading
-          ? null // Nascondi la bottom bar durante il caricamento
-          : BottomNavigationBar(
-              currentIndex: _selectedIndex,
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: Theme.of(context).primaryColor,
-              unselectedItemColor: Colors.grey,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.location_on),
-                  label: 'KM VICINI',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.euro),
-                  label: 'PIÙ ECONOMICI',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.analytics),
-                  label: 'PREZZO MEDIO',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.directions_car),
-                  label: 'STATISTICHE',
-                ),
-              ],
-              onTap: (index) => setState(() => _selectedIndex = index),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (_bannerAd != null &&
+              _isBannerAdReady) // Verifica entrambe le condizioni
+            Container(
+              width: _bannerAd!.size.width.toDouble(),
+              height: _bannerAd!.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd!),
             ),
+          BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Theme.of(context).primaryColor,
+            unselectedItemColor: Colors.grey,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.location_on),
+                label: 'KM VICINI',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.euro),
+                label: '+ ECONOMICI',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.analytics),
+                label: 'PREZZO MEDIO',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.directions_car),
+                label: 'STATISTICHE',
+              ),
+            ],
+            onTap: (index) => setState(() => _selectedIndex = index),
+          ),
+        ],
+      ),
     );
   }
 

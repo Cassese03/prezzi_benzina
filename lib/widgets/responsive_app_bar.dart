@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pompa_benzina/widgets/animated_title.dart';
 
 class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onRefresh;
@@ -28,7 +27,16 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: const Center(
-        child: AnimatedTitle(),
+        child: Text(
+          'CARMATE',
+          style: TextStyle(
+            fontFamily: 'Orbitron',
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.white,
+            letterSpacing: 1.2,
+          ),
+        ),
       ),
       actions: [
         IconButton(

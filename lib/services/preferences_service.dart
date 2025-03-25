@@ -10,7 +10,7 @@ class PreferencesService {
 
   static const List<String> availableFuelTypes = [
     'Benzina',
-    'Diesel',
+    'Gasolio',
     'GPL',
     'Metano'
   ];

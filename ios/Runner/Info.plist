@@ -60,5 +60,7 @@
 		<string>https</string>
 		<string>http</string>
 	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>admob-app-id</string> 
 </dict>
 </plist>

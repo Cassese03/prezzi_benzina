@@ -43,7 +43,6 @@ class _AnimatedTitleState extends State<AnimatedTitle>
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Testo statico CARMATE
         const Text(
           'CARMATE',
           style: TextStyle(

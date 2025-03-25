@@ -56,7 +56,7 @@ class _AddVehicleDialogState extends State<AddVehicleDialog> {
             ),
             DropdownButtonFormField<String>(
               value: fuelType,
-              items: ['Benzina', 'Diesel', 'GPL', 'Metano']
+              items: ['Benzina', 'Gasolio', 'GPL', 'Metano']
                   .map((type) => DropdownMenuItem(
                         value: type,
                         child: Text(type),

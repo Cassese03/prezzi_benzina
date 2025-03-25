@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pompa_benzina/services/ad_service.dart';
 import 'screens/home_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AdService.initialize();
   runApp(const MyApp());
 }
 

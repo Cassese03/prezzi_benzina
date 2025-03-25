@@ -21,7 +21,7 @@ class GasStationService {
 
       throw Exception('Errore API: ${response.statusCode}');
     } catch (e) {
-      print('Errore nel recupero stazioni: $e');
+      //print('Errore nel recupero stazioni: $e');
       return [];
     }
   }

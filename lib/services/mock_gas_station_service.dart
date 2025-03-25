@@ -19,7 +19,7 @@ class MockGasStationService {
         throw Exception('Errore nella richiesta API: ${response.statusCode}');
       }
     } catch (e) {
-      print('Errore nel recupero delle stazioni: $e');
+      //print('Errore nel recupero delle stazioni: $e');
       // Ritorna una lista vuota in caso di errore
       return [];
     }

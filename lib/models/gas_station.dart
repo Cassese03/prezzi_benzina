@@ -60,7 +60,7 @@ class GasStation {
         }
       }
     } catch (e) {
-      print('Errore dettagliato nel parsing prezzi: $e');
+      //print('Errore dettagliato nel parsing prezzi: $e');
     }
 
     return GasStation(
