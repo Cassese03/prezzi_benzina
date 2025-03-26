@@ -4,9 +4,11 @@ import 'package:flutter/foundation.dart';
 class AdService {
   static String get bannerAdUnitId {
     if (kDebugMode) {
-      return 'ca-app-pub-3940256099942544/6300978111'; // ID test
+      // ID di test per il banner
+      return 'ca-app-pub-3940256099942544/6300978111';
     } else {
-      return 'admob-banner-key'; // ID reale
+      // Il tuo ID reale
+      return 'admob-banner-key';
     }
   }
 
@@ -41,20 +43,9 @@ class AdService {
   static Future<void> initialize() async {
     try {
       await MobileAds.instance.initialize();
-
-      if (kDebugMode) {
-        // Solo in modalità debug aggiungiamo gli ID dei dispositivi di test
-        await MobileAds.instance.updateRequestConfiguration(
-          RequestConfiguration(
-            testDeviceIds: ['CC0B33DBD53E40530019ED5C8EF53418'],
-          ),
-        );
-        //print('Mobile Ads inizializzato in modalità TEST');
-      } else {
-        //print('Mobile Ads inizializzato in modalità PRODUZIONE');
-      }
+      print('Mobile Ads inizializzato correttamente');
     } catch (e) {
-      //print('ERRORE inizializzazione Mobile Ads: $e');
+      print('Errore inizializzazione Mobile Ads: $e');
     }
   }
 }
