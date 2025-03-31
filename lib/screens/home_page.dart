@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
   LatLng _currentPosition = const LatLng(0, 0); // Default position
 
   int _selectedIndex = 0;
+  double _currentSheetSize = 0.4; // Aggiungi questa proprietà
 
   @override
   void initState() {
@@ -179,11 +180,9 @@ class _HomePageState extends State<HomePage> {
           markerIcon =
               BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
         } else if (benzinaPrice < 2.0) {
-          markerIcon =
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow);
+          markerIcon = BitmapDescriptor.defaultMarkerWithHue(120); // Arancione
         } else {
-          markerIcon =
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+          markerIcon = BitmapDescriptor.defaultMarkerWithHue(0); // Rosso
         }
       } else {
         markerIcon = BitmapDescriptor.defaultMarker;
@@ -200,14 +199,6 @@ class _HomePageState extends State<HomePage> {
         onTap: () => _showStationDetails(station),
       );
     }).toSet();
-
-    // Aggiungi marker per posizione corrente
-    markers.add(Marker(
-      markerId: const MarkerId('current_location'),
-      position: _currentPosition,
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      infoWindow: const InfoWindow(title: 'La tua posizione'),
-    ));
 
     return markers;
   }
@@ -354,13 +345,6 @@ class _HomePageState extends State<HomePage> {
                       label: 'Indicazioni',
                       onTap: () => _openMaps(station),
                     ),
-                    _buildActionButton(
-                      icon: Icons.star_outline,
-                      label: 'Preferiti',
-                      onTap: () {
-                        // Aggiungi ai preferiti
-                      },
-                    ),
                   ],
                 ),
               ],
@@ -470,178 +454,106 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       body: _isLoading
-          ? const SplashScreen(isLoading: true) // Modifica qui
+          ? const SplashScreen(isLoading: true)
           : Stack(
               children: [
-                GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: _currentPosition,
-                    zoom: 14,
-                  ),
-                  markers: _markers,
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
-                  onMapCreated: (controller) => _mapController = controller,
-                ),
-                (!kIsWeb ||
-                        MediaQueryData.fromView(View.of(context)).size.width <
-                            600)
-                    ? NotificationListener<DraggableScrollableNotification>(
-                        onNotification: (notification) {
-                          // Debug print per verificare se le gesture vengono rilevate
-                          print('Scroll fraction: ${notification.extent}');
-                          return true;
-                        },
-                        child: DraggableScrollableSheet(
-                          initialChildSize: 0.4,
-                          minChildSize: 0.1,
-                          maxChildSize: 0.9,
-                          snap: true, // Aggiunto snap per migliore feedback
-                          snapSizes: const [
-                            0.1,
-                            0.4,
-                            0.9
-                          ], // Punti di snap definiti
-                          builder: (context, scrollController) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(16),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    spreadRadius: 1,
-                                    blurRadius: 10,
-                                  ),
-                                ],
-                              ),
-                              child: CustomScrollView(
-                                controller: scrollController,
-                                slivers: [
-                                  SliverToBoxAdapter(
-                                    child: Column(
-                                      children: [
-                                        // Handle bar migliorato
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12),
-                                          child: Container(
-                                            height: 5,
-                                            width: 40,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[300],
-                                              borderRadius:
-                                                  BorderRadius.circular(2.5),
-                                            ),
-                                          ),
-                                        ),
-                                        // Content
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.8,
-                                          child: IndexedStack(
-                                            index: _selectedIndex,
-                                            children: [
-                                              NearestStationsPage(
-                                                stations: _stations,
-                                                onStationSelected:
-                                                    _selectStation,
-                                              ),
-                                              CheapestStationsPage(
-                                                stations: _stations,
-                                                onStationSelected:
-                                                    _selectStation,
-                                              ),
-                                              AveragePricePage(
-                                                  stations: _stations),
-                                              const car_stats.CarStatsPage(),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      )
-                    : Stack(
-                        children: [
-                          Positioned.fill(
-                            child: IgnorePointer(
-                              ignoring: _selectedIndex != -1,
-                              child: GoogleMap(
-                                initialCameraPosition: CameraPosition(
-                                  target: _currentPosition,
-                                  zoom: 14,
-                                ),
-                                markers: _markers,
-                                myLocationEnabled: true,
-                                myLocationButtonEnabled: true,
-                                onMapCreated: (controller) =>
-                                    _mapController = controller,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(16),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    spreadRadius: 1,
-                                    blurRadius: 10,
-                                  ),
-                                ],
-                              ),
-                              child: GestureDetector(
-                                onVerticalDragUpdate: (_) {},
-                                child: SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.4,
-                                  child: IndexedStack(
-                                    index: _selectedIndex,
-                                    children: [
-                                      NearestStationsPage(
-                                        stations: _stations,
-                                        onStationSelected: _selectStation,
-                                      ),
-                                      CheapestStationsPage(
-                                        stations: _stations,
-                                        onStationSelected: _selectStation,
-                                      ),
-                                      AveragePricePage(stations: _stations),
-                                      const car_stats.CarStatsPage(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 200),
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: MediaQuery.of(context).size.height *
+                      (1 - _currentSheetSize),
+                  child: AbsorbPointer(
+                    absorbing: false,
+                    child: GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: _currentPosition,
+                        zoom: 14,
                       ),
+                      markers: _markers,
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: true,
+                      zoomControlsEnabled: kIsWeb,
+                      mapToolbarEnabled: kIsWeb,
+                      zoomGesturesEnabled: true,
+                      scrollGesturesEnabled: true,
+                      rotateGesturesEnabled: true,
+                      tiltGesturesEnabled: true,
+                      compassEnabled: true,
+                      mapType: MapType.normal,
+                      onMapCreated: (controller) => _mapController = controller,
+                    ),
+                  ),
+                ),
+                NotificationListener<DraggableScrollableNotification>(
+                  onNotification: (notification) {
+                    setState(() {
+                      _currentSheetSize = notification.extent;
+                    });
+                    return true;
+                  },
+                  child: DraggableScrollableSheet(
+                    initialChildSize: 0.4,
+                    minChildSize: 0.1,
+                    maxChildSize: 0.8,
+                    builder: (context, scrollController) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            IgnorePointer(
+                              ignoring: false,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                width: 40,
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: IndexedStack(
+                                index: _selectedIndex,
+                                children: [
+                                  NearestStationsPage(
+                                    stations: _stations,
+                                    onStationSelected: _selectStation,
+                                  ),
+                                  CheapestStationsPage(
+                                    stations: _stations,
+                                    onStationSelected: _selectStation,
+                                  ),
+                                  AveragePricePage(stations: _stations),
+                                  const car_stats.CarStatsPage(),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (_bannerAd != null &&
-              _isBannerAdReady) // Verifica entrambe le condizioni
+          if (!kIsWeb && _bannerAd != null && _isBannerAdReady)
             Container(
               width: _bannerAd!.size.width.toDouble(),
               height: _bannerAd!.size.height.toDouble(),
@@ -650,19 +562,30 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBar(
             currentIndex: _selectedIndex,
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: Theme.of(context).primaryColor,
-            unselectedItemColor: Colors.grey,
+            selectedItemColor: const Color(0xFFE67E22),
+            selectedIconTheme: const IconThemeData(
+              color: Color(0xFFE67E22),
+              size: 28,
+            ),
+            unselectedItemColor: const Color(0xFF2C3E50),
+            unselectedIconTheme: const IconThemeData(
+              color: Color(0xFF2C3E50),
+              size: 24,
+            ),
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.location_on),
+                icon: Icon(Icons.near_me_outlined),
+                activeIcon: Icon(Icons.near_me),
                 label: 'KM VICINI',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.euro),
-                label: '+ ECONOMICI',
+                icon: Icon(Icons.local_gas_station_outlined),
+                activeIcon: Icon(Icons.local_gas_station),
+                label: 'ECONOMICI',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.analytics),
+                icon: Icon(Icons.show_chart_outlined),
+                activeIcon: Icon(Icons.show_chart),
                 label: 'PREZZO MEDIO',
               ),
               BottomNavigationBarItem(
@@ -684,7 +607,6 @@ class _HomePageState extends State<HomePage> {
         15,
       ),
     );
-    // Opzionalmente mostra i dettagli della stazione
     _showStationDetails(station);
   }
 }

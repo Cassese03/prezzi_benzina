@@ -68,6 +68,7 @@ class _CheapestStationsPageState extends State<CheapestStationsPage> {
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           child: ListTile(
+            leading: const Icon(Icons.local_gas_station),
             title: Text(
               station.name,
               style: const TextStyle(fontWeight: FontWeight.bold),
@@ -75,7 +76,19 @@ class _CheapestStationsPageState extends State<CheapestStationsPage> {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(station.address),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on,
+                      size: 16,
+                      color: Color(0xFFE67E22),
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(station.address),
+                    ),
+                  ],
+                ),
                 if (station.gestore.isNotEmpty)
                   Text(
                     station.gestore,
@@ -85,7 +98,13 @@ class _CheapestStationsPageState extends State<CheapestStationsPage> {
                   if (priceInfo.self > 0)
                     Text(
                       'Self: €${priceInfo.self.toStringAsFixed(3)}',
-                      style: const TextStyle(color: Colors.green),
+                      style: TextStyle(
+                        color: priceInfo.self < 1.8
+                            ? const Color(0xFF2C3E50) // Blu petrolio
+                            : priceInfo.self < 2.0
+                                ? const Color(0xFFE67E22) // Arancione
+                                : const Color(0xFFE74C3C), // Rosso
+                      ),
                     ),
                   if (priceInfo.servito > 0)
                     Text(

@@ -332,7 +332,8 @@ class _CarStatsPageState extends State<CarStatsPage> {
                   _StatCard(
                     title: 'Spesa Totale',
                     value: '€${_statistics['totalSpent']?.toStringAsFixed(2)}',
-                    icon: Icons.euro,
+                    icon: Icons.account_balance_wallet,
+                    iconColor: const Color(0xFFE67E22),
                   ),
                   const Divider(),
                   _StatCard(
@@ -340,6 +341,7 @@ class _CarStatsPageState extends State<CarStatsPage> {
                     value:
                         '${_statistics['averageConsumption']?.toStringAsFixed(1)} L/100km',
                     icon: Icons.local_gas_station,
+                    iconColor: const Color(0xFF2C3E50),
                   ),
                   const Divider(),
                   _StatCard(
@@ -486,11 +488,13 @@ class _StatCard extends StatelessWidget {
   final String title;
   final String value;
   final IconData icon;
+  final Color? iconColor;
 
   const _StatCard({
     required this.title,
     required this.value,
     required this.icon,
+    this.iconColor,
   });
 
   @override
@@ -499,7 +503,8 @@ class _StatCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Icon(icon, size: 24, color: Theme.of(context).primaryColor),
+          Icon(icon,
+              size: 24, color: iconColor ?? Theme.of(context).primaryColor),
           const SizedBox(width: 16),
           Expanded(
             child: Column(

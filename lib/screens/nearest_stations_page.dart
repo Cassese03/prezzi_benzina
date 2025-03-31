@@ -62,19 +62,29 @@ class _NearestStationsPageState extends State<NearestStationsPage> {
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           child: ListTile(
+            leading: const Icon(
+              Icons.local_gas_station,
+              color: Color(0xFF2C3E50),
+              size: 28,
+            ),
             title: Text(
               station.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            subtitle: Row(
               children: [
-                Text(station.address),
-                if (station.gestore.isNotEmpty)
-                  Text(
-                    station.gestore,
-                    style: const TextStyle(fontSize: 12),
-                  ),
+                const Icon(
+                  Icons.location_on,
+                  size: 16,
+                  color: Color(0xFFE67E22),
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(station.address),
+                ),
               ],
             ),
             trailing: Column(

@@ -28,7 +28,7 @@
             android:value="maps-api-key" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="admob-app-id"/>
+            android:value="admob app id"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

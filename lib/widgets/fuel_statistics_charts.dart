@@ -22,6 +22,13 @@ class _FuelStatisticsChartsState extends State<FuelStatisticsCharts> {
   DateTime? _startDate;
   DateTime? _endDate;
 
+  final colors = [
+    const Color(0xFF2C3E50), // Blu petrolio
+    const Color(0xFFE67E22), // Arancione
+    const Color(0xFFE74C3C), // Rosso
+    const Color(0xFFECF0F1), // Grigio chiaro
+  ];
+
   List<Refueling> get filteredRefuelings {
     return widget.refuelings.where((refueling) {
       if (_startDate == null || _endDate == null) return true;
