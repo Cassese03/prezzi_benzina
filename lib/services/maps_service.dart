@@ -1,5 +1,7 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class MapsService {
-  static const String apiKey = 'maps-api-key';
+  static String get apiKey => dotenv.env['API_KEY'] ?? '';
 
   static String getStaticMapUrl(double lat, double lng,
       {int zoom = 15, int width = 400, int height = 200}) {

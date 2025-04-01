@@ -200,6 +200,14 @@ class _HomePageState extends State<HomePage> {
       );
     }).toSet();
 
+    // Aggiungi marker per posizione corrente
+    markers.add(Marker(
+      markerId: const MarkerId('current_location'),
+      position: _currentPosition,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      infoWindow: const InfoWindow(title: 'La tua posizione'),
+    ));
+
     return markers;
   }
 
@@ -455,99 +463,95 @@ class _HomePageState extends State<HomePage> {
       ),
       body: _isLoading
           ? const SplashScreen(isLoading: true)
-          : Stack(
+          : Column(
               children: [
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 200),
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: MediaQuery.of(context).size.height *
-                      (1 - _currentSheetSize),
-                  child: AbsorbPointer(
-                    absorbing: false,
-                    child: GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: _currentPosition,
-                        zoom: 14,
+                Expanded(
+                  flex: 3,
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: _currentPosition,
+                      zoom: 14,
+                    ),
+                    markers: _markers,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    zoomControlsEnabled: !kIsWeb,
+                    mapToolbarEnabled: !kIsWeb,
+                    zoomGesturesEnabled: !kIsWeb,
+                    scrollGesturesEnabled: !kIsWeb,
+                    rotateGesturesEnabled: !kIsWeb,
+                    tiltGesturesEnabled: !kIsWeb,
+                    compassEnabled: !kIsWeb,
+                    mapType: MapType.normal,
+                    onMapCreated: (controller) => _mapController = controller,
+                  ),
+                ),
+                // NotificationListener<DraggableScrollableNotification>(
+                //   onNotification: (notification) {
+                //     setState(() {
+                //       _currentSheetSize = notification.extent;
+                //     });
+                //     return true;
+                //   },
+                //   child: DraggableScrollableSheet(
+                //     initialChildSize: 0.4,
+                //     minChildSize: 0.1,
+                //     maxChildSize: 0.8,
+                //     builder: (context, scrollController) {
+                //       return
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(20),
                       ),
-                      markers: _markers,
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: true,
-                      zoomControlsEnabled: kIsWeb,
-                      mapToolbarEnabled: kIsWeb,
-                      zoomGesturesEnabled: true,
-                      scrollGesturesEnabled: true,
-                      rotateGesturesEnabled: true,
-                      tiltGesturesEnabled: true,
-                      compassEnabled: true,
-                      mapType: MapType.normal,
-                      onMapCreated: (controller) => _mapController = controller,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        IgnorePointer(
+                          ignoring: false,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            width: 40,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: IndexedStack(
+                            index: _selectedIndex,
+                            children: [
+                              NearestStationsPage(
+                                stations: _stations,
+                                onStationSelected: _selectStation,
+                              ),
+                              CheapestStationsPage(
+                                stations: _stations,
+                                onStationSelected: _selectStation,
+                              ),
+                              AveragePricePage(stations: _stations),
+                              const car_stats.CarStatsPage(),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                NotificationListener<DraggableScrollableNotification>(
-                  onNotification: (notification) {
-                    setState(() {
-                      _currentSheetSize = notification.extent;
-                    });
-                    return true;
-                  },
-                  child: DraggableScrollableSheet(
-                    initialChildSize: 0.4,
-                    minChildSize: 0.1,
-                    maxChildSize: 0.8,
-                    builder: (context, scrollController) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 10,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            IgnorePointer(
-                              ignoring: false,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8),
-                                width: 40,
-                                height: 4,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(2),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: IndexedStack(
-                                index: _selectedIndex,
-                                children: [
-                                  NearestStationsPage(
-                                    stations: _stations,
-                                    onStationSelected: _selectStation,
-                                  ),
-                                  CheapestStationsPage(
-                                    stations: _stations,
-                                    onStationSelected: _selectStation,
-                                  ),
-                                  AveragePricePage(stations: _stations),
-                                  const car_stats.CarStatsPage(),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                //     },
+                //   ),
+                // ),
               ],
             ),
       bottomNavigationBar: Column(

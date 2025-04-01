@@ -24,7 +24,7 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="pompa_benzina">
+  <meta name="apple-mobile-web-app-title" content="carmate">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
@@ -47,7 +47,10 @@
     window.flutterWebRenderer = "html";
   </script>
   <script src="cors_config.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=maps-api-key&libraries=marker"></script>
+  <script>
+    const apiKey = window.env.API_KEY; // Carica la chiave API da una variabile globale
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=marker"></script>
 </head>
 <body>
   <script>
