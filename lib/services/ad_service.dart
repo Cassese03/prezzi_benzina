@@ -3,8 +3,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdService {
   static String get bannerAdUnitId {
-    const String admobBannerKey = String.fromEnvironment('ADMOB_BANNER_KEY');
-    return dotenv.env['ADMOB_BANNER_KEY'] ?? admobBannerKey;
+    const String admobBannerKey = 'admob-banner-key';
+    return admobBannerKey;
   }
 
   static BannerAd createBannerAd() {

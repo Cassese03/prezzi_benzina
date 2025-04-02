@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> {
   LatLng _currentPosition = const LatLng(0, 0); // Default position
 
   int _selectedIndex = 0;
-  double _currentSheetSize = 0.4; // Aggiungi questa proprietà
 
   @override
   void initState() {

@@ -48,7 +48,7 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<key>GMSApiKey</key>
-	<string>${API_KEY}</string>
+	<string>maps-api-key</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Questa app ha bisogno della tua posizione per trovare i distributori più vicini</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -61,6 +61,6 @@
 		<string>http</string>
 	</array>
 	<key>GADApplicationIdentifier</key>
-	<string>${ADMOB_APP_ID}</string> 
+	<string>admob app id</string> 
 </dict>
 </plist>
