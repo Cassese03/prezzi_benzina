@@ -266,9 +266,33 @@ class _CarStatsPageState extends State<CarStatsPage> {
             TabBar(
               labelColor: Theme.of(context).primaryColor,
               tabs: const [
-                Tab(text: 'Riepilogo'),
-                Tab(text: 'Rifornimenti'),
-                Tab(text: 'Grafici'),
+                Tab(
+                  child: Text(
+                    'Riepilogo',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Rifornimenti',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Grafici',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
               ],
             ),
 

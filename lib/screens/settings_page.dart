@@ -41,7 +41,10 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: [
           ListTile(
-            leading: const Icon(Icons.directions_car),
+            leading: const Icon(
+              Icons.directions_car,
+              color: Colors.orange,
+            ),
             title: const Text('Gestisci veicoli'),
             onTap: () {
               Navigator.push(
@@ -51,13 +54,19 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.local_gas_station),
+            leading: const Icon(
+              Icons.local_gas_station,
+              color: Colors.orange,
+            ),
             title: const Text('Tipo Carburante'),
             subtitle: Text('Attuale: $_selectedFuelType'),
             onTap: () => _showFuelTypePicker(context),
           ),
           ListTile(
-            leading: const Icon(Icons.map),
+            leading: const Icon(
+              Icons.map,
+              color: Colors.orange,
+            ),
             title: const Text('Raggio di ricerca'),
             subtitle: Text('$_searchRadius km'),
             onTap: () => _showRadiusSelector(context),

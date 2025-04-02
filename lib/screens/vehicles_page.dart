@@ -171,18 +171,8 @@ class _VehiclesPageState extends State<VehiclesPage> {
         title: const Text('I miei Veicoli'),
       ),
       body: _vehicles.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Nessun veicolo registrato'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _showAddVehicleDialog,
-                    child: const Text('Aggiungi Veicolo'),
-                  ),
-                ],
-              ),
+          ? const Center(
+              child: Text('Nessun veicolo registrato'),
             )
           : ListView.builder(
               itemCount: _vehicles.length,
