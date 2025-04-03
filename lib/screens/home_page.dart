@@ -60,10 +60,27 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _checkLocationPermission();
     _loadVehicles();
     _getCurrentLocation(); // Nuovo metodo per ottenere la posizione
     if (!kIsWeb) {
       _loadBannerAd();
+    }
+  }
+
+  Future<void> _checkLocationPermission() async {
+    bool hasPermission =
+        await LocationPermissionDialog.checkAndRequestPermission(context);
+    if (!hasPermission) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'L\'accesso alla posizione è necessario per mostrare le stazioni di servizio più vicine'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
     }
   }
 
@@ -608,5 +625,75 @@ class _HomePageState extends State<HomePage> {
       ),
     );
     _showStationDetails(station);
+  }
+}
+
+class LocationPermissionDialog {
+  static Future<void> showLocationPermissionDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Accesso alla posizione'),
+          content: const Text(
+            'Per mostrarti le stazioni di servizio più vicine, abbiamo bisogno di accedere alla tua posizione. '
+            'Vuoi consentire l\'accesso alla posizione?',
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('NON ORA'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('IMPOSTAZIONI'),
+              onPressed: () async {
+                // Aspetta che l'utente torni dall'app delle impostazioni
+                LocationPermission permission =
+                    await Geolocator.checkPermission();
+                if (permission == LocationPermission.denied ||
+                    permission == LocationPermission.deniedForever) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'È necessario abilitare la localizzazione per utilizzare tutte le funzionalità'),
+                        duration: Duration(seconds: 3),
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Future<bool> checkAndRequestPermission(BuildContext context) async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await showLocationPermissionDialog(context);
+      return false;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        await showLocationPermissionDialog(context);
+        return false;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      await showLocationPermissionDialog(context);
+      return false;
+    }
+
+    return true;
   }
 }
