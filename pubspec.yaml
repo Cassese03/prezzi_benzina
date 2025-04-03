@@ -36,8 +36,9 @@ dependencies:
   shared_preferences: ^2.2.2
   url_launcher: ^6.1.14
   fl_chart: ^0.65.0
-  google_mobile_ads: ^3.1.0
+  google_mobile_ads: ^4.0.0
   flutter_dotenv: ^5.0.2
+  flutter_launcher_icons: ^0.13.1  # Aggiungi questa riga
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -61,6 +62,19 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+# Aggiungi questa nuova sezione dopo flutter:
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/logo.png"
+  web:
+    generate: true
+    image_path: "assets/images/logo.png"
+    background_color: "#FFFFFF"
+    theme_color: "#2C3E50"
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -78,6 +92,8 @@ flutter:
           weight: 400
         - asset: assets/fonts/Orbitron-Bold.ttf
           weight: 700
+
+          
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

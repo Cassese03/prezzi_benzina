@@ -1,10 +1,8 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdService {
   static String get bannerAdUnitId {
-    const String admobBannerKey = 'admob-banner-key';
-    return admobBannerKey;
+    return 'ADMOB-BANNER-KEY'; // Sostituisci con il tuo ID di unità pubblicitaria
   }
 
   static BannerAd createBannerAd() {
