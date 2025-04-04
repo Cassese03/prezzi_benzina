@@ -31,7 +31,7 @@ android {
         minSdkVersion 23  // Aumentato per supportare Google Maps
         targetSdkVersion flutter.targetSdkVersion
         versionCode 1
-        versionName "1.1"
+        versionName "1.0"
         multiDexEnabled true
     }
 

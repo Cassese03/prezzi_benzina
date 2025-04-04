@@ -6,8 +6,11 @@ import 'screens/home_page.dart';
 void main() async {
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
+
   if (!kIsWeb) {
-    await AdService.initialize();
+    await AdService.initialize().catchError((error) {
+      debugPrint('Errore inizializzazione AdMob: $error');
+    });
   }
 }
 

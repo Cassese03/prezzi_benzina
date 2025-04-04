@@ -474,34 +474,16 @@ class _HomePageState extends State<HomePage> {
           ? const SplashScreen(isLoading: true)
           : Stack(
               children: [
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 200),
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: MediaQuery.of(context).size.height *
-                      (1 - _currentSheetSize),
-                  child: AbsorbPointer(
-                    absorbing: false,
-                    child: GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: _currentPosition,
-                        zoom: 14,
-                      ),
-                      markers: _markers,
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: true,
-                      zoomControlsEnabled: kIsWeb,
-                      mapToolbarEnabled: kIsWeb,
-                      zoomGesturesEnabled: true,
-                      scrollGesturesEnabled: true,
-                      rotateGesturesEnabled: true,
-                      tiltGesturesEnabled: true,
-                      compassEnabled: true,
-                      mapType: MapType.normal,
-                      onMapCreated: (controller) => _mapController = controller,
-                    ),
+                GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: _currentPosition,
+                    zoom: 14,
                   ),
+                  markers: _markers,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
+                  mapType: MapType.normal,
+                  onMapCreated: (controller) => _mapController = controller,
                 ),
                 NotificationListener<DraggableScrollableNotification>(
                   onNotification: (notification) {
