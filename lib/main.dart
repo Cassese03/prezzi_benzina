@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pompa_benzina/services/ad_service.dart';
+import 'package:carmate/services/ad_service.dart';
 import 'screens/home_page.dart';
 
 void main() async {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pompa_benzina/widgets/refueling_list_view.dart';
+import 'package:carmate/widgets/refueling_list_view.dart';
 import 'dart:core';
 import '../models/refueling.dart';
 import '../services/car_stats_service.dart';

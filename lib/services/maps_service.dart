@@ -1,5 +1,3 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 class MapsService {
   static String get apiKey => 'maps-api-key';
 

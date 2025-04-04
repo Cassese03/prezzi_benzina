@@ -9,7 +9,7 @@ Descrizione: Mostra una mappa con le stazioni di benzina e quattro tab di naviga
 Funzionalità chiave: Geolocalizzazione, visualizzazione mappa, caricamento dati CSV, gestione storage alternativo
 [csv_viewer_page.dart`](untitled:/%60/c%3A[CSV_SERVICE] Download file stazioni completato
 [CSV_SERVICE] Avvio download da https://www.mise.gov.it/images/exportCSV/prezzo_alle_8.csv
-[CSV_SERVICE] Salvataggio file in /data/user/0/com.example.pompa_benzina/app_flutter/gas_prices.csv
+[CSV_SERVICE] Salvataggio file in /data/user/0/com.example.carmate/app_flutter/gas_prices.csv
 [CSV_SERVICE] RIGA 3: 59183;ENIMOOV S.P.A.;Agip Eni;Stradale;19829 AGRIGENTO;SS.189 KM. 64+649 - C.DA SAN MICHELE  S.N.C  ;AGRIGENTO;AG;37.333935;13.595533
 [CSV_SERVICE] RIGA 4: 23778;ALFONSO DI BENEDETTO CARBURANTI LUBRIFICANTI SRL;Sicilpetroli;Stradale;A. Di Benedetto srl Via Imera Ag;VIA IMERA SN 92100, AGRIGENTO (AG) 10 92100;AGRIGENTO;AG;37.312390927445705;13.58591309570079
 [CSV_SERVICE] Headers richiesta: {User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36, Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8, Accept-Language: it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7}

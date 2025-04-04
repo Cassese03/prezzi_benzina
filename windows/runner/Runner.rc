@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.pompa.benzina" "\0"
-            VALUE "FileDescription", "pompa_benzina" "\0"
+            VALUE "FileDescription", "carmate" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "pompa_benzina" "\0"
+            VALUE "InternalName", "carmate" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.pompa.benzina. All rights reserved." "\0"
-            VALUE "OriginalFilename", "pompa_benzina.exe" "\0"
-            VALUE "ProductName", "pompa_benzina" "\0"
+            VALUE "OriginalFilename", "carmate.exe" "\0"
+            VALUE "ProductName", "carmate" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

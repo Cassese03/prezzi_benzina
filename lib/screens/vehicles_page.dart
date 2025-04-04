@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pompa_benzina/widgets/add_vehicle_dialog.dart';
+import 'package:carmate/widgets/add_vehicle_dialog.dart';
 import '../models/vehicle.dart';
 import '../services/preferences_service.dart';
 

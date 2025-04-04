@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
-import 'package:pompa_benzina/services/ad_service.dart';
+import 'package:carmate/services/ad_service.dart';
 import 'dart:async';
 import '../models/gas_station.dart';
 import '../models/vehicle.dart';
@@ -17,7 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../services/maps_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'settings_page.dart';
-// ignore: unused_import
+import 'package:seo/seo.dart';
 import 'splash_screen.dart';
 import '../widgets/responsive_app_bar.dart';
 
@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
   LatLng _currentPosition = const LatLng(0, 0); // Default position
 
   int _selectedIndex = 0;
+  // ignore: unused_field
   double _currentSheetSize = 0.4; // Aggiungi questa proprietà
 
   @override
@@ -450,151 +451,194 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ResponsiveAppBar(
-        onRefresh: _getCurrentLocation,
-        onSettings: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SettingsPage(
-                onSettingsChanged: () async {
-                  if (mounted) {
-                    setState(() => _isLoading = true);
-                    await _loadNearbyStations();
-                    setState(() => _isLoading = false);
-                  }
-                },
-              ),
-            ),
-          );
-        },
-      ),
-      body: _isLoading
-          ? const SplashScreen(isLoading: true)
-          : Stack(
-              children: [
-                GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: _currentPosition,
-                    zoom: 14,
-                  ),
-                  markers: _markers,
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
-                  mapType: MapType.normal,
-                  onMapCreated: (controller) => _mapController = controller,
-                ),
-                NotificationListener<DraggableScrollableNotification>(
-                  onNotification: (notification) {
-                    setState(() {
-                      _currentSheetSize = notification.extent;
-                    });
-                    return true;
+    return SeoController(
+      enabled: true,
+      tree: WidgetTree(context: context),
+      child: Scaffold(
+        appBar: ResponsiveAppBar(
+          onRefresh: _getCurrentLocation,
+          onSettings: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SettingsPage(
+                  onSettingsChanged: () async {
+                    if (mounted) {
+                      setState(() => _isLoading = true);
+                      await _loadNearbyStations();
+                      setState(() => _isLoading = false);
+                    }
                   },
-                  child: DraggableScrollableSheet(
-                    initialChildSize: 0.4,
-                    minChildSize: 0.1,
-                    maxChildSize: 0.8,
-                    builder: (context, scrollController) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 10,
-                            ),
-                          ],
+                ),
+              ),
+            );
+          },
+        ),
+        body: _isLoading
+            ? const SplashScreen(isLoading: true)
+            : Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(
+                      child: Seo.image(
+                        src:
+                            "https://carmate-website.vercel.app/assets/assets/images/logo.png",
+                        alt: 'CarMate App Logo',
+                        child: Image.asset(
+                          "assets/images/logo.png",
                         ),
-                        child: Column(
-                          children: [
-                            IgnorePointer(
-                              ignoring: false,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8),
-                                width: 40,
-                                height: 4,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  Opacity(
+                    opacity: 0,
+                    child: Column(
+                      children: [
+                        Seo.text(
+                          text:
+                              'CarMate - Trova i Migliori Prezzi del Carburante',
+                          style: TextTagStyle.h1,
+                          child: const Text(''),
+                        ),
+                        Seo.text(
+                          text:
+                              'CarMate è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
+                          style: TextTagStyle.h2,
+                          child: const Text(''),
+                        ),
+                        Seo.image(
+                          src:
+                              "https://carmate-website.vercel.app/assets/assets/images/logo.png",
+                          alt: 'CarMate - App per il risparmio sul carburante',
+                          child: const SizedBox(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: _currentPosition,
+                      zoom: 14,
+                    ),
+                    markers: _markers,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    mapType: MapType.normal,
+                    onMapCreated: (controller) => _mapController = controller,
+                  ),
+                  NotificationListener<DraggableScrollableNotification>(
+                    onNotification: (notification) {
+                      setState(() {
+                        _currentSheetSize = notification.extent;
+                      });
+                      return true;
+                    },
+                    child: DraggableScrollableSheet(
+                      initialChildSize: 0.4,
+                      minChildSize: 0.1,
+                      maxChildSize: 0.8,
+                      builder: (context, scrollController) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              IgnorePointer(
+                                ignoring: false,
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  width: 40,
+                                  height: 4,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: IndexedStack(
-                                index: _selectedIndex,
-                                children: [
-                                  NearestStationsPage(
-                                    stations: _stations,
-                                    onStationSelected: _selectStation,
-                                  ),
-                                  CheapestStationsPage(
-                                    stations: _stations,
-                                    onStationSelected: _selectStation,
-                                  ),
-                                  AveragePricePage(stations: _stations),
-                                  const car_stats.CarStatsPage(),
-                                ],
+                              Expanded(
+                                child: IndexedStack(
+                                  index: _selectedIndex,
+                                  children: [
+                                    NearestStationsPage(
+                                      stations: _stations,
+                                      onStationSelected: _selectStation,
+                                    ),
+                                    CheapestStationsPage(
+                                      stations: _stations,
+                                      onStationSelected: _selectStation,
+                                    ),
+                                    AveragePricePage(stations: _stations),
+                                    const car_stats.CarStatsPage(),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
+                ],
+              ),
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (!kIsWeb && _bannerAd != null && _isBannerAdReady)
+              Container(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
+              ),
+            BottomNavigationBar(
+              currentIndex: _selectedIndex,
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: const Color(0xFFE67E22),
+              selectedIconTheme: const IconThemeData(
+                color: Color(0xFFE67E22),
+                size: 28,
+              ),
+              unselectedItemColor: const Color(0xFF2C3E50),
+              unselectedIconTheme: const IconThemeData(
+                color: Color(0xFF2C3E50),
+                size: 24,
+              ),
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.near_me_outlined),
+                  activeIcon: Icon(Icons.near_me),
+                  label: 'KM VICINI',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.local_gas_station_outlined),
+                  activeIcon: Icon(Icons.local_gas_station),
+                  label: 'ECONOMICI',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.show_chart_outlined),
+                  activeIcon: Icon(Icons.show_chart),
+                  label: 'PREZZO MEDIO',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.directions_car),
+                  label: 'STATISTICHE',
                 ),
               ],
+              onTap: (index) => setState(() => _selectedIndex = index),
             ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (!kIsWeb && _bannerAd != null && _isBannerAdReady)
-            Container(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            ),
-          BottomNavigationBar(
-            currentIndex: _selectedIndex,
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: const Color(0xFFE67E22),
-            selectedIconTheme: const IconThemeData(
-              color: Color(0xFFE67E22),
-              size: 28,
-            ),
-            unselectedItemColor: const Color(0xFF2C3E50),
-            unselectedIconTheme: const IconThemeData(
-              color: Color(0xFF2C3E50),
-              size: 24,
-            ),
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.near_me_outlined),
-                activeIcon: Icon(Icons.near_me),
-                label: 'KM VICINI',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.local_gas_station_outlined),
-                activeIcon: Icon(Icons.local_gas_station),
-                label: 'ECONOMICI',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.show_chart_outlined),
-                activeIcon: Icon(Icons.show_chart),
-                label: 'PREZZO MEDIO',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.directions_car),
-                label: 'STATISTICHE',
-              ),
-            ],
-            onTap: (index) => setState(() => _selectedIndex = index),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

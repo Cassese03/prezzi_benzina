@@ -1,4 +1,4 @@
-package com.pompa.benzina.pompa_benzina
+package com.pompa.benzina.carmate
 
 import io.flutter.embedding.android.FlutterActivity
 
