@@ -7,13 +7,6 @@ import 'screens/home_page.dart';
 void main() async {
   runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
-
-  if (!kIsWeb) {
-    await CarService.initialize();
-    await AdService.initialize().catchError((error) {
-      print('Errore inizializzazione AdMob: $error');
-    });
-  }
 }
 
 class MyApp extends StatelessWidget {

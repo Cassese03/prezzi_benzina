@@ -48,5 +48,5 @@ flutter {
     source = "../.."
 }
 dependencies {
-    implementation "androidx.car.app:app:1.3.0" // oppure la versione più recente
+    implementation "androidx.car.app:app:1.0.0" // oppure la versione più recente
 }
