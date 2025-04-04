@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_carplay: 
   http: ^1.1.0
   google_maps_flutter: ^2.5.3
   geolocator: ^10.1.0

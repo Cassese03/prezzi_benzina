@@ -3,7 +3,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class AdService {
   static String get bannerAdUnitId {
     // Usa l'ID di test per lo sviluppo
-    return 'admob-banner-key';
+    return 'ca-app-pub-4250948562102925/8449028167';
   }
 
   static Future<void> initialize() async {

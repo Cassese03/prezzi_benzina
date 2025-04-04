@@ -1,3 +1,4 @@
+import 'package:carmate/services/car_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:carmate/services/ad_service.dart';
@@ -8,6 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (!kIsWeb) {
+    await CarService.initialize();
     await AdService.initialize().catchError((error) {
       debugPrint('Errore inizializzazione AdMob: $error');
     });

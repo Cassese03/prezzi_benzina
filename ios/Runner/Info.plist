@@ -48,7 +48,7 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<key>GMSApiKey</key>
-	<string>maps-api-key</string>
+	<string>AIzaSyCoiskCn8rH89TSLvX9rB6yTQO9c0dCcvM</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Questa app ha bisogno della tua posizione per trovare i distributori più vicini</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -61,6 +61,12 @@
 		<string>http</string>
 	</array>
 	<key>GADApplicationIdentifier</key>
-	<string>admob-app-id</string> 
+	<string>ca-app-pub-4250948562102925~8224966183</string>
+	<key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+    </array>
+    <key>com.apple.developer.carplay-charging</key>
+    <true/>
 </dict>
 </plist>

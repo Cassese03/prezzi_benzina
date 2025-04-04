@@ -1,5 +1,5 @@
 class MapsService {
-  static String get apiKey => 'maps-api-key';
+  static String get apiKey => 'AIzaSyCoiskCn8rH89TSLvX9rB6yTQO9c0dCcvM';
 
   static String getStaticMapUrl(double lat, double lng,
       {int zoom = 15, int width = 400, int height = 200}) {

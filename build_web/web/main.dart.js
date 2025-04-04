@@ -46610,7 +46610,7 @@ if(j.aq(0,"Metano"))B.b.Y(i,A.b([B.cc,k.zm("Metano",j)],n))
 j=A.o4(new A.ba(B.bl,A.cb(i,B.z,B.w,B.D),q),2,q)
 i=A.l(o.e)
 s=A.l(o.f)
-s=A.aN8(A.o1(12),new A.rD(A.aQb(q,q,new A.wM("https://maps.googleapis.com/maps/api/staticmap?center="+i+","+s+"&zoom=15&size=400x200&markers=color:red%7C"+i+","+s+"&key=maps-api-key",1,q)),new A.az2(),new A.az3(),1/0,200,B.D4,q),B.bM)
+s=A.aN8(A.o1(12),new A.rD(A.aQb(q,q,new A.wM("https://maps.googleapis.com/maps/api/staticmap?center="+i+","+s+"&zoom=15&size=400x200&markers=color:red%7C"+i+","+s+"&key=AIzaSyCoiskCn8rH89TSLvX9rB6yTQO9c0dCcvM",1,q)),new A.az2(),new A.az3(),1/0,200,B.D4,q),B.bM)
 i=k.c
 i.toString
 i=A.CW(B.IM,A.N(i).fr,q,q)

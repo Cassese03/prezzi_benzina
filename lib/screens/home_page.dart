@@ -1,3 +1,4 @@
+import 'package:carmate/services/car_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -476,122 +477,183 @@ class _HomePageState extends State<HomePage> {
         ),
         body: _isLoading
             ? const SplashScreen(isLoading: true)
-            : Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Center(
-                      child: Seo.image(
-                        src:
-                            "https://carmate-website.vercel.app/assets/assets/images/logo.png",
-                        alt: 'CarMate App Logo',
-                        child: Image.asset(
-                          "assets/images/logo.png",
+            : MediaQuery.of(context).size.width >
+                    MediaQuery.of(context).size.height
+                ? Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: GoogleMap(
+                          initialCameraPosition: CameraPosition(
+                            target: _currentPosition,
+                            zoom: 14,
+                          ),
+                          markers: _markers,
+                          myLocationEnabled: true,
+                          myLocationButtonEnabled: true,
+                          mapType: MapType.normal,
+                          onMapCreated: (controller) =>
+                              _mapController = controller,
                         ),
                       ),
-                    ),
-                  ),
-                  Opacity(
-                    opacity: 0,
-                    child: Column(
-                      children: [
-                        Seo.text(
-                          text:
-                              'CarMate - Trova i Migliori Prezzi del Carburante',
-                          style: TextTagStyle.h1,
-                          child: const Text(''),
-                        ),
-                        Seo.text(
-                          text:
-                              'CarMate è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
-                          style: TextTagStyle.h2,
-                          child: const Text(''),
-                        ),
-                        Seo.image(
-                          src:
-                              "https://carmate-website.vercel.app/assets/assets/images/logo.png",
-                          alt: 'CarMate - App per il risparmio sul carburante',
-                          child: const SizedBox(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: _currentPosition,
-                      zoom: 14,
-                    ),
-                    markers: _markers,
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    mapType: MapType.normal,
-                    onMapCreated: (controller) => _mapController = controller,
-                  ),
-                  NotificationListener<DraggableScrollableNotification>(
-                    onNotification: (notification) {
-                      setState(() {
-                        _currentSheetSize = notification.extent;
-                      });
-                      return true;
-                    },
-                    child: DraggableScrollableSheet(
-                      initialChildSize: 0.4,
-                      minChildSize: 0.1,
-                      maxChildSize: 0.8,
-                      builder: (context, scrollController) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(20),
+                      Expanded(
+                        child: NotificationListener<
+                            DraggableScrollableNotification>(
+                          onNotification: (notification) {
+                            setState(() {
+                              _currentSheetSize = notification.extent;
+                            });
+                            return true;
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                ),
+                              ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 10,
-                              ),
-                            ],
+                            child: IndexedStack(
+                              index: _selectedIndex,
+                              children: [
+                                NearestStationsPage(
+                                  stations: _stations,
+                                  onStationSelected: _selectStation,
+                                ),
+                                CheapestStationsPage(
+                                  stations: _stations,
+                                  onStationSelected: _selectStation,
+                                ),
+                                AveragePricePage(stations: _stations),
+                                const car_stats.CarStatsPage(),
+                              ],
+                            ),
                           ),
-                          child: Column(
-                            children: [
-                              IgnorePointer(
-                                ignoring: false,
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  width: 40,
-                                  height: 4,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ],
+                  )
+                : Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Center(
+                          child: Seo.image(
+                            src:
+                                "https://carmate-website.vercel.app/assets/assets/images/logo.png",
+                            alt: 'CarMate App Logo',
+                            child: Image.asset(
+                              "assets/images/logo.png",
+                            ),
+                          ),
+                        ),
+                      ),
+                      Opacity(
+                        opacity: 0,
+                        child: Column(
+                          children: [
+                            Seo.text(
+                              text:
+                                  'CarMate - Trova i Migliori Prezzi del Carburante',
+                              style: TextTagStyle.h1,
+                              child: const Text(''),
+                            ),
+                            Seo.text(
+                              text:
+                                  'CarMate è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
+                              style: TextTagStyle.h2,
+                              child: const Text(''),
+                            ),
+                            Seo.image(
+                              src:
+                                  "https://carmate-website.vercel.app/assets/assets/images/logo.png",
+                              alt:
+                                  'CarMate - App per il risparmio sul carburante',
+                              child: const SizedBox(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: _currentPosition,
+                          zoom: 14,
+                        ),
+                        markers: _markers,
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                        mapType: MapType.normal,
+                        onMapCreated: (controller) =>
+                            _mapController = controller,
+                      ),
+                      NotificationListener<DraggableScrollableNotification>(
+                        onNotification: (notification) {
+                          setState(() {
+                            _currentSheetSize = notification.extent;
+                          });
+                          return true;
+                        },
+                        child: DraggableScrollableSheet(
+                          initialChildSize: 0.4,
+                          minChildSize: 0.1,
+                          maxChildSize: 0.8,
+                          builder: (context, scrollController) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 10,
                                   ),
-                                ),
+                                ],
                               ),
-                              Expanded(
-                                child: IndexedStack(
-                                  index: _selectedIndex,
-                                  children: [
-                                    NearestStationsPage(
-                                      stations: _stations,
-                                      onStationSelected: _selectStation,
+                              child: Column(
+                                children: [
+                                  IgnorePointer(
+                                    ignoring: false,
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      width: 40,
+                                      height: 4,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
                                     ),
-                                    CheapestStationsPage(
-                                      stations: _stations,
-                                      onStationSelected: _selectStation,
+                                  ),
+                                  Expanded(
+                                    child: IndexedStack(
+                                      index: _selectedIndex,
+                                      children: [
+                                        NearestStationsPage(
+                                          stations: _stations,
+                                          onStationSelected: _selectStation,
+                                        ),
+                                        CheapestStationsPage(
+                                          stations: _stations,
+                                          onStationSelected: _selectStation,
+                                        ),
+                                        AveragePricePage(stations: _stations),
+                                        const car_stats.CarStatsPage(),
+                                      ],
                                     ),
-                                    AveragePricePage(stations: _stations),
-                                    const car_stats.CarStatsPage(),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
         bottomNavigationBar: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -643,7 +705,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _selectStation(GasStation station) {
+  void _selectStation(GasStation station) async {
     _mapController?.animateCamera(
       CameraUpdate.newLatLngZoom(
         LatLng(station.latitude, station.longitude),
@@ -651,6 +713,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
     _showStationDetails(station);
+    await CarService.showStationInCar(station);
   }
 }
 
