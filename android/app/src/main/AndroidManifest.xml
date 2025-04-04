@@ -26,10 +26,10 @@
         android:requestLegacyExternalStorage="true">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD1CbD7N7s85dNRKdEVlOyVNxP2IUmnUwU" />
+            android:value="AIzaSyCoiskCn8rH89TSLvX9rB6yTQO9c0dCcvM" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="admob-app-id"/>
+            android:value="ca-app-pub-4250948562102925~8224966183"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

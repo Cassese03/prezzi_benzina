@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/gas_station.dart';
 
 class CarService {
@@ -11,6 +10,17 @@ class CarService {
       await platform.invokeMethod('initializeCarService');
     } catch (e) {
       print('Errore inizializzazione car service: $e');
+    }
+  }
+
+  // Check if running on car interface or mobile
+  static Future<bool> isRunningInCar() async {
+    try {
+      final result = await platform.invokeMethod('isRunningInCar');
+      return result ?? false;
+    } catch (e) {
+      print('Error checking car interface: $e');
+      return false;
     }
   }
 

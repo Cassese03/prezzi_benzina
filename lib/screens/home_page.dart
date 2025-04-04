@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carmate/services/car_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -712,8 +714,14 @@ class _HomePageState extends State<HomePage> {
         15,
       ),
     );
-    _showStationDetails(station);
-    await CarService.showStationInCar(station);
+    if (Platform.isAndroid || Platform.isIOS) {
+      final isCarMode = await CarService.isRunningInCar();
+      if (isCarMode) {
+        await CarService.showStationInCar(station);
+      } else {
+        _showStationDetails(station);
+      }
+    }
   }
 }
 
