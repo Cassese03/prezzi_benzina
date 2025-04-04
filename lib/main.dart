@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (!kIsWeb) {
-    await CarService.initialize();
+    //await CarService.initialize();
     await AdService.initialize().catchError((error) {
       debugPrint('Errore inizializzazione AdMob: $error');
     });

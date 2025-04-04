@@ -142,14 +142,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_carplay:
-    dependency: "direct main"
-    description:
-      name: flutter_carplay
-      sha256: "698a9b14b93efaa2bece9ad65b7cb550372335d650bad97be9722e0ace33091f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
   flutter_dotenv:
     dependency: "direct main"
     description:
