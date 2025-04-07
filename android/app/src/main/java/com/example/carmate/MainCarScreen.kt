@@ -5,12 +5,17 @@ import androidx.car.app.Screen
 import androidx.car.app.model.*
 import androidx.core.graphics.drawable.IconCompat
 import android.util.Log
+import androidx.car.app.constraints.ConstraintManager
+import com.example.carmate.screens.AveragePricesScreen
+import com.example.carmate.screens.NearestStationsPage
+import com.example.carmate.util.FlutterBridge
 
 /**
  * Schermata principale per Android Auto
  */
 class MainCarScreen(carContext: CarContext) : Screen(carContext) {
     private val TAG = "MainCarScreen"
+    private val flutterBridge by lazy { FlutterBridge(carContext) }
     
     override fun onGetTemplate(): Template {
         Log.d(TAG, "Creazione template principale")
@@ -19,7 +24,6 @@ class MainCarScreen(carContext: CarContext) : Screen(carContext) {
             .addItem(createRow("Trova Distributori", "Cerca distributori vicino a te", R.drawable.ic_gas_station))
             .addItem(createRow("Prezzi Medi", "Visualizza prezzi medi dei carburanti", R.drawable.ic_price_tag))
             .addItem(createRow("Rifornimenti", "Gestisci i tuoi rifornimenti", R.drawable.ic_refueling))
-            .addItem(createRow("Veicoli", "Gestisci i tuoi veicoli", R.drawable.ic_car))
 
         return ListTemplate.Builder()
             .setSingleList(listBuilder.build())
@@ -39,10 +43,15 @@ class MainCarScreen(carContext: CarContext) : Screen(carContext) {
             )
             .setOnClickListener {
                 when (title) {
-                    "Trova Distributori" -> screenManager.push(createSimpleMessageScreen("Distributori", "Funzionalità non disponibile"))
-                    "Prezzi Medi" -> screenManager.push(createSimpleMessageScreen("Prezzi Medi", "Funzionalità non disponibile"))
+                    "Trova Distributori" -> {
+                        Log.d(TAG, "Navigazione verso schermata Prezzi Medi")
+                        screenManager.push(NearestStationsPage(carContext, flutterBridge))
+                    }
+                    "Prezzi Medi" -> {
+                        Log.d(TAG, "Navigazione verso schermata Prezzi Medi")
+                        screenManager.push(AveragePricesScreen(carContext, flutterBridge))
+                    }
                     "Rifornimenti" -> screenManager.push(createSimpleMessageScreen("Rifornimenti", "Funzionalità non disponibile"))
-                    "Veicoli" -> screenManager.push(createSimpleMessageScreen("Veicoli", "Funzionalità non disponibile"))
                 }
             }
             .build()

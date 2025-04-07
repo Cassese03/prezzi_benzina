@@ -7,7 +7,7 @@
     
     <!-- Risoluzione corretta del conflitto -->
     <application
-        android:label="CarMate Debug"
+        android:label="CarMate"
         tools:replace="android:label"
         tools:overrideLibrary="androidx.car.app.automotive">
         <!-- Nessun contenuto aggiuntivo necessario qui -->

@@ -1,10 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_page.dart';
+import 'package:carmate/android_auto/auto_method_channel.dart';
 
 void main() async {
-  runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inizializza il canale di comunicazione con Android Auto
+  await AndroidAutoChannel.initialize();
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
