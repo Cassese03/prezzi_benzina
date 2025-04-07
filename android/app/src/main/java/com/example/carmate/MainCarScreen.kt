@@ -1,0 +1,65 @@
+package com.example.carmate
+
+import androidx.car.app.CarContext
+import androidx.car.app.Screen
+import androidx.car.app.model.*
+import androidx.core.graphics.drawable.IconCompat
+import android.util.Log
+
+/**
+ * Schermata principale per Android Auto
+ */
+class MainCarScreen(carContext: CarContext) : Screen(carContext) {
+    private val TAG = "MainCarScreen"
+    
+    override fun onGetTemplate(): Template {
+        Log.d(TAG, "Creazione template principale")
+        
+        val listBuilder = ItemList.Builder()
+            .addItem(createRow("Trova Distributori", "Cerca distributori vicino a te", R.drawable.ic_gas_station))
+            .addItem(createRow("Prezzi Medi", "Visualizza prezzi medi dei carburanti", R.drawable.ic_price_tag))
+            .addItem(createRow("Rifornimenti", "Gestisci i tuoi rifornimenti", R.drawable.ic_refueling))
+            .addItem(createRow("Veicoli", "Gestisci i tuoi veicoli", R.drawable.ic_car))
+
+        return ListTemplate.Builder()
+            .setSingleList(listBuilder.build())
+            .setTitle("CarMate")
+            .setHeaderAction(Action.BACK)
+            .build()
+    }
+
+    private fun createRow(title: String, subtitle: String, iconResId: Int): Row {
+        return Row.Builder()
+            .setTitle(title)
+            .addText(subtitle)
+            .setImage(
+                CarIcon.Builder(
+                    IconCompat.createWithResource(carContext, iconResId)
+                ).build()
+            )
+            .setOnClickListener {
+                when (title) {
+                    "Trova Distributori" -> screenManager.push(createSimpleMessageScreen("Distributori", "Funzionalità non disponibile"))
+                    "Prezzi Medi" -> screenManager.push(createSimpleMessageScreen("Prezzi Medi", "Funzionalità non disponibile"))
+                    "Rifornimenti" -> screenManager.push(createSimpleMessageScreen("Rifornimenti", "Funzionalità non disponibile"))
+                    "Veicoli" -> screenManager.push(createSimpleMessageScreen("Veicoli", "Funzionalità non disponibile"))
+                }
+            }
+            .build()
+    }
+    
+    private fun createSimpleMessageScreen(title: String, message: String): Screen {
+        return object : Screen(carContext) {
+            override fun onGetTemplate(): Template {
+                return MessageTemplate.Builder(message)
+                    .setTitle(title)
+                    .setHeaderAction(Action.BACK)
+                    .addAction(Action.Builder()
+                        .setTitle("OK")
+                        .setOnClickListener { screenManager.pop() }
+                        .build())
+                    .build()
+            }
+        }
+    }
+}

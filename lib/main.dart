@@ -1,7 +1,5 @@
-import 'package:carmate/services/car_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:carmate/services/ad_service.dart';
 import 'screens/home_page.dart';
 
 void main() async {
