@@ -1,29 +1,25 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'dev.flutter.flutter-gradle-plugin'
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
 }
 
 def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
+def localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
+    localPropertiesFile.withReader("UTF-8") { reader ->
         localProperties.load(reader)
     }
 }
 
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
 android {
     namespace = "com.example.carmate"
-    compileSdkVersion 34
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
@@ -32,86 +28,35 @@ android {
 
     defaultConfig {
         applicationId = "com.example.carmate"
-        minSdkVersion 29
-        targetSdkVersion 34
+        minSdkVersion 29  // Aumentato a 29 per Android Auto
+        targetSdkVersion flutter.targetSdkVersion
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
     }
 
-    signingConfigs {
-        release {
-            keyAlias 'softmaint'
-            keyPassword 'softmaint'
-            storeFile file('C:/Users/hdsvi/Desktop/softmaint.jks')
-            storePassword 'softmaint'
-        }
-    }
-
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
         release {
-            signingConfig signingConfigs.release
+            signingConfig = signingConfigs.debug
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    sourceSets {
-        main {
-            kotlin {
-                exclude '**/kotlin/com/example/pompa_benzina/**'
-                exclude '**/model/**'
-                exclude '**/screen/**'
-            }
-            kotlin.srcDirs = ['src/main/java']
         }
     }
 }
 
 flutter {
-    source '../..'
+    source = "../.."
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
     implementation "androidx.multidex:multidex:2.0.1"
+    implementation "androidx.core:core-ktx:1.12.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
     
-    // Dipendenze essenziali per Android Auto
+    // Dipendenze per Android Auto
     implementation "androidx.car.app:app:1.2.0"
     implementation "androidx.car.app:app-projected:1.2.0"
     
-    // Supporto base Android
-    implementation "androidx.core:core-ktx:1.12.0"
-    implementation "androidx.appcompat:appcompat:1.6.1"
+    // Dipendenze per i widget Android e il supporto
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 }
-
-// Task per eliminare i file problematici
-task removeConflictingFiles {
-    doLast {
-        // Elimina MainActivity.kt conflittuale
-        def conflictingMainActivity = file('src/main/kotlin/com/example/pompa_benzina/MainActivity.kt')
-        if (conflictingMainActivity.exists()) {
-            conflictingMainActivity.delete()
-            println "File eliminato: ${conflictingMainActivity.path}"
-        }
-        
-        // Elimina anche i file delle mappe problematici
-        def gasStationFile = file('src/main/java/com/example/carmate/model/GasStation.kt')
-        if (gasStationFile.exists()) {
-            gasStationFile.delete()
-            println "File eliminato: ${gasStationFile.path}"
-        }
-        
-        def mapScreenFile = file('src/main/java/com/example/carmate/screen/MapScreen.kt')
-        if (mapScreenFile.exists()) {
-            mapScreenFile.delete()
-            println "File eliminato: ${mapScreenFile.path}"
-        }
-    }
-}
-
-// Esegui il task prima della compilazione
-preBuild.dependsOn removeConflictingFiles

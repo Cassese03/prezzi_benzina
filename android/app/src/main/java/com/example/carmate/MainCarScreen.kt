@@ -5,9 +5,9 @@ import androidx.car.app.Screen
 import androidx.car.app.model.*
 import androidx.core.graphics.drawable.IconCompat
 import android.util.Log
-import androidx.car.app.constraints.ConstraintManager
 import com.example.carmate.screens.AveragePricesScreen
 import com.example.carmate.screens.NearestStationsPage
+import com.example.carmate.screens.RefuelingsPage
 import com.example.carmate.util.FlutterBridge
 
 /**
@@ -44,31 +44,19 @@ class MainCarScreen(carContext: CarContext) : Screen(carContext) {
             .setOnClickListener {
                 when (title) {
                     "Trova Distributori" -> {
-                        Log.d(TAG, "Navigazione verso schermata Prezzi Medi")
+                        Log.d(TAG, "Navigazione verso schermata Trova Distributori")
                         screenManager.push(NearestStationsPage(carContext, flutterBridge))
                     }
                     "Prezzi Medi" -> {
                         Log.d(TAG, "Navigazione verso schermata Prezzi Medi")
                         screenManager.push(AveragePricesScreen(carContext, flutterBridge))
                     }
-                    "Rifornimenti" -> screenManager.push(createSimpleMessageScreen("Rifornimenti", "Funzionalità non disponibile"))
+                    "Rifornimenti" -> {
+                        Log.d(TAG, "Navigazione verso schermata Rifornimenti")
+                        screenManager.push(RefuelingsPage(carContext, flutterBridge))
+                    }
                 }
             }
             .build()
-    }
-    
-    private fun createSimpleMessageScreen(title: String, message: String): Screen {
-        return object : Screen(carContext) {
-            override fun onGetTemplate(): Template {
-                return MessageTemplate.Builder(message)
-                    .setTitle(title)
-                    .setHeaderAction(Action.BACK)
-                    .addAction(Action.Builder()
-                        .setTitle("OK")
-                        .setOnClickListener { screenManager.pop() }
-                        .build())
-                    .build()
-            }
-        }
     }
 }

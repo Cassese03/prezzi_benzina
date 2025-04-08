@@ -15,6 +15,7 @@ import java.util.Locale
 
 /**
  * Schermata che mostra i prezzi medi del carburante ottenuti da Flutter
+ * Non è necessario modificare questa schermata poiché non dipende dai veicoli
  */
 class AveragePricesScreen(
     carContext: CarContext,

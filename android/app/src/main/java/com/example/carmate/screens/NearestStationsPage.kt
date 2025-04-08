@@ -16,6 +16,7 @@ import java.util.Locale
 
 /**
  * Schermata che mostra i distributori più vicini
+ * Non è necessario modificare questa schermata poiché non dipende dai veicoli
  */
 class NearestStationsPage(
     carContext: CarContext,
