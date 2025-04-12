@@ -759,7 +759,7 @@ class _AddRefuelingFormState extends State<AddRefuelingForm> {
             ),
             DropdownButtonFormField<String>(
               value: _fuelType,
-              items: ['Benzina', 'Gasolio', 'GPL', 'Metano']
+              items: ['Benzina', 'Gasolio', 'GPL', 'Metano','Elettrica']
                   .map((type) => DropdownMenuItem(
                         value: type,
                         child: Text(type),

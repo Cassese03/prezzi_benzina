@@ -16,6 +16,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final PreferencesService _prefsService = PreferencesService();
   String _selectedFuelType = 'Benzina';
   int _searchRadius = 5;
+  bool _isElectricModeOnly = false;
 
   @override
   void initState() {
@@ -26,9 +27,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _loadPreferences() async {
     final fuelType = await _prefsService.getPreferredFuelType();
     final radius = await _prefsService.getSearchRadius();
+    final isElectricModeOnly = await _prefsService.getIsElectricModeOnly();
+
     setState(() {
       _selectedFuelType = fuelType;
       _searchRadius = radius;
+      _isElectricModeOnly = isElectricModeOnly;
     });
   }
 
@@ -55,12 +59,48 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           ListTile(
             leading: const Icon(
+              Icons.electric_car,
+              color: Colors.blue,
+            ),
+            title: const Text('Modalità solo Elettrico'),
+            subtitle: Text(_isElectricModeOnly
+                ? 'Attiva (verranno mostrate solo stazioni elettriche)'
+                : 'Disattiva (verranno mostrate stazioni di tutti i tipi)'),
+            trailing: Switch(
+              value: _isElectricModeOnly,
+              activeColor: Colors.blue,
+              onChanged: (bool value) async {
+                await _prefsService.setIsElectricModeOnly(value);
+                setState(() {
+                  _isElectricModeOnly = value;
+                  if (value) {
+                    _selectedFuelType = 'Elettrica';
+                  }
+                });
+
+                widget.onSettingsChanged();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(value
+                        ? 'Modalità solo Elettrico attivata'
+                        : 'Modalità standard attivata'),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+            ),
+          ),
+          ListTile(
+            leading: const Icon(
               Icons.local_gas_station,
               color: Colors.orange,
             ),
             title: const Text('Tipo Carburante'),
             subtitle: Text('Attuale: $_selectedFuelType'),
-            onTap: () => _showFuelTypePicker(context),
+            enabled: !_isElectricModeOnly,
+            onTap:
+                _isElectricModeOnly ? null : () => _showFuelTypePicker(context),
           ),
           ListTile(
             leading: const Icon(
@@ -94,15 +134,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       await _prefsService.setPreferredFuelType(value);
                       setState(() => _selectedFuelType = value);
 
-                      // Chiudi il dialog
                       Navigator.pop(context);
-                      // Chiudi il drawer
                       Navigator.pop(context);
 
-                      // Trigger del refresh completo
                       widget.onSettingsChanged();
 
-                      // Mostra feedback all'utente
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

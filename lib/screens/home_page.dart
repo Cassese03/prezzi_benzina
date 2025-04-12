@@ -191,31 +191,40 @@ class _HomePageState extends State<HomePage> {
     final Set<Marker> markers = stations.map((station) {
       // Calcoliamo il colore del marker in base al prezzo
       BitmapDescriptor markerIcon;
-
       // Verifica se ha un prezzo per la benzina self service
       final benzinaPrice =
           station.getLowestPrice('Benzina', selfServiceOnly: true);
-      if (benzinaPrice != null) {
-        // Determina il colore in base al prezzo
-        if (benzinaPrice < 1.8) {
-          markerIcon =
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
-        } else if (benzinaPrice < 2.0) {
-          markerIcon = BitmapDescriptor.defaultMarkerWithHue(120); // Arancione
-        } else {
-          markerIcon = BitmapDescriptor.defaultMarkerWithHue(0); // Rosso
-        }
+
+      if (station.tipo == 'Elettrica') {
+        markerIcon =
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
       } else {
-        markerIcon = BitmapDescriptor.defaultMarker;
+        if (benzinaPrice != null) {
+          // Determina il colore in base al prezzo
+          if (benzinaPrice < 1.8) {
+            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueGreen);
+          } else if (benzinaPrice < 2.0) {
+            markerIcon =
+                BitmapDescriptor.defaultMarkerWithHue(120); // Arancione
+          } else {
+            markerIcon = BitmapDescriptor.defaultMarkerWithHue(0); // Rosso
+          }
+        } else {
+          markerIcon = BitmapDescriptor.defaultMarker;
+        }
       }
 
       return Marker(
         markerId: MarkerId(station.id),
+        
         position: LatLng(station.latitude, station.longitude),
         icon: markerIcon,
         infoWindow: InfoWindow(
           title: station.name,
-          snippet: 'Benzina: €${benzinaPrice?.toStringAsFixed(3) ?? "N/D"}',
+          snippet: (station.tipo != 'Elettrica')
+              ? 'Benzina: €${benzinaPrice?.toStringAsFixed(3) ?? "N/D"}'
+              : '${station.fuelPrices['Elettrica']!.potenzaKw} kW',
         ),
         onTap: () => _showStationDetails(station),
       );
@@ -282,7 +291,15 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Icon(Icons.local_gas_station, size: 32),
+                      child: Icon(
+                        (station.tipo == 'Elettrica')
+                            ? Icons.ev_station
+                            : Icons.local_gas_station,
+                        color: (station.tipo == 'Elettrica')
+                            ? Colors.lightBlue
+                            : Color(0xFF2C3E50),
+                        size: 32,
+                      ),
                     ),
                   ],
                 ),
@@ -291,11 +308,10 @@ class _HomePageState extends State<HomePage> {
 
                 // Prezzi carburante
                 Text(
-                  'Prezzi carburante',
+                  'Prezzi',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
-
                 // Card per i prezzi dei carburanti
                 Card(
                   elevation: 2,
@@ -303,11 +319,23 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       children: [
-                        _buildFuelPriceRow('Benzina', station.fuelPrices),
+                        (station.tipo == 'Elettrica')
+                            ? _buildPriceRowEle(
+                                'Elettrica',
+                                '${station.fuelPrices['Elettrica']!.potenzaKw} kW',
+                                station.fuelPrices['Elettrica']?.lastUpdate,
+                              )
+                            : _buildFuelPriceRow('Benzina', station.fuelPrices),
                         const Divider(),
-                        _buildFuelPriceRow('Gasolio', station.fuelPrices),
-                        const Divider(),
-                        _buildFuelPriceRow('GPL', station.fuelPrices),
+                        (station.tipo == 'Elettrica')
+                            ? Text('')
+                            : _buildFuelPriceRow('Gasolio', station.fuelPrices),
+                        (station.tipo == 'Elettrica')
+                            ? Text('')
+                            : const Divider(),
+                        (station.tipo == 'Elettrica')
+                            ? Text('')
+                            : _buildFuelPriceRow('GPL', station.fuelPrices),
                         if (station.fuelPrices.containsKey('Metano')) ...[
                           const Divider(),
                           _buildFuelPriceRow('Metano', station.fuelPrices),
@@ -402,6 +430,29 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text(
               price != null ? '€${price.toStringAsFixed(3)}' : 'N/D',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            if (lastUpdate != null)
+              Text(
+                'Agg. ${DateFormat('dd/MM HH:mm').format(lastUpdate)}',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPriceRowEle(String label, String? price, DateTime? lastUpdate) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              price != null ? '${price}' : 'N/D',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             if (lastUpdate != null)

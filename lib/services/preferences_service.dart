@@ -7,12 +7,15 @@ class PreferencesService {
   static const String _vehiclesKey = 'vehicles';
   static const String _selectedVehicleKey = 'selected_vehicle';
   static const String _searchRadiusKey = 'search_radius';
+  static const String _isElectricModeOnlyKey =
+      'is_electric_mode_only'; // Nuova chiave
 
   static const List<String> availableFuelTypes = [
     'Benzina',
     'Gasolio',
     'GPL',
-    'Metano'
+    'Metano',
+    'Elettrica'
   ];
 
   static const List<int> availableRadiusValues = [5, 10, 20, 30, 50];
@@ -83,5 +86,20 @@ class PreferencesService {
   Future<int> getSearchRadius() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt(_searchRadiusKey) ?? 5; // Default 5km
+  }
+
+  Future<bool> getIsElectricModeOnly() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_isElectricModeOnlyKey) ?? false;
+  }
+
+  Future<void> setIsElectricModeOnly(bool isElectricModeOnly) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_isElectricModeOnlyKey, isElectricModeOnly);
+
+    // Se attivata la modalità elettrica, imposta anche il tipo di carburante su Elettrica
+    if (isElectricModeOnly) {
+      await setPreferredFuelType('Elettrica');
+    }
   }
 }

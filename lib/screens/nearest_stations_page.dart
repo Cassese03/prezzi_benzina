@@ -62,9 +62,13 @@ class _NearestStationsPageState extends State<NearestStationsPage> {
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           child: ListTile(
-            leading: const Icon(
-              Icons.local_gas_station,
-              color: Color(0xFF2C3E50),
+            leading: Icon(
+              (station.tipo == 'Elettrica')
+                  ? Icons.ev_station
+                  : Icons.local_gas_station,
+              color: (station.tipo == 'Elettrica')
+                  ? Colors.lightBlue
+                  : Color(0xFF2C3E50),
               size: 28,
             ),
             title: Text(
@@ -85,6 +89,7 @@ class _NearestStationsPageState extends State<NearestStationsPage> {
                 Expanded(
                   child: Text(station.address),
                 ),
+                Text('${station.distanza.toStringAsFixed(2)} km'),
               ],
             ),
             trailing: Column(
@@ -92,13 +97,21 @@ class _NearestStationsPageState extends State<NearestStationsPage> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(_currentFuelType),
-                Text(
-                  _formatPrice(station),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
+                (station.tipo == 'Elettrica')
+                    ? Text(
+                        '${station.fuelPrices['Elettrica']!.potenzaKw} kW',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      )
+                    : Text(
+                        _formatPrice(station),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
               ],
             ),
             onTap: () => widget.onStationSelected(station),
