@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AnimatedTitle extends StatefulWidget {
-  const AnimatedTitle({Key? key}) : super(key: key);
+  const AnimatedTitle({super.key});
 
   @override
   State<AnimatedTitle> createState() => _AnimatedTitleState();

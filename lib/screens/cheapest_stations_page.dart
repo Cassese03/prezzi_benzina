@@ -7,10 +7,10 @@ class CheapestStationsPage extends StatefulWidget {
   final Function(GasStation) onStationSelected;
 
   const CheapestStationsPage({
-    Key? key,
+    super.key,
     required this.stations,
     required this.onStationSelected,
-  }) : super(key: key);
+  });
 
   @override
   State<CheapestStationsPage> createState() => _CheapestStationsPageState();

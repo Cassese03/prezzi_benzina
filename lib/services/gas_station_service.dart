@@ -14,10 +14,11 @@ class GasStationService {
       final isElectricModeOnly = await _prefsService.getIsElectricModeOnly();
 
       String url = '';
-      if (isElectricModeOnly)
+      if (isElectricModeOnly) {
         url = '$baseUrl/charge-stations?lat=$lat&lng=$lng&distance=$distance';
-      else
+      } else {
         url = '$baseUrl/gas-stations?lat=$lat&lng=$lng&distance=$distance';
+      }
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {

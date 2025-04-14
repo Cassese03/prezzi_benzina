@@ -9,7 +9,7 @@ class CarService {
     try {
       await platform.invokeMethod('initializeCarService');
     } catch (e) {
-      print('Errore inizializzazione car service: $e');
+     // print('Errore inizializzazione car service: $e');
     }
   }
 
@@ -19,7 +19,7 @@ class CarService {
       final result = await platform.invokeMethod('isRunningInCar');
       return result ?? false;
     } catch (e) {
-      print('Error checking car interface: $e');
+     //print('Error checking car interface: $e');
       return false;
     }
   }
@@ -36,7 +36,7 @@ class CarService {
             MapEntry(key, {'self': value.self, 'servito': value.servito})),
       });
     } catch (e) {
-      print('Errore invio dati a car interface: $e');
+      //print('Errore invio dati a car interface: $e');
     }
   }
 }

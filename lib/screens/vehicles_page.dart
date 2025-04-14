@@ -1,10 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:carmate/widgets/add_vehicle_dialog.dart';
 import '../models/vehicle.dart';
 import '../services/preferences_service.dart';
 
 class VehiclesPage extends StatefulWidget {
-  const VehiclesPage({Key? key}) : super(key: key);
+  const VehiclesPage({super.key});
 
   @override
   State<VehiclesPage> createState() => _VehiclesPageState();
@@ -49,7 +51,7 @@ class _VehiclesPageState extends State<VehiclesPage> {
             ),
             TextButton(
               onPressed: () {
-                // TODO: Implementare acquisto versione premium
+                //TODO: Implementare acquisto versione premium
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

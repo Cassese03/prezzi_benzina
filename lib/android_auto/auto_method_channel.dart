@@ -14,7 +14,7 @@ class AndroidAutoChannel {
 
   /// Gestisce le chiamate in arrivo da Android Auto
   static Future<dynamic> _handleMethodCall(MethodCall call) async {
-    print('Ricevuta chiamata da Android Auto: ${call.method}');
+    //print('Ricevuta chiamata da Android Auto: ${call.method}');
 
     switch (call.method) {
       case 'getAveragePrices':
@@ -45,13 +45,13 @@ class AndroidAutoChannel {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-    final PreferencesService _prefsService = PreferencesService();
-    final GasStationService _service = GasStationService();
+    final PreferencesService prefsService = PreferencesService();
+    final GasStationService service = GasStationService();
 
-    final fuelType = await _prefsService.getPreferredFuelType();
-    int distance = await _prefsService.getSearchRadius();
+    final fuelType = await prefsService.getPreferredFuelType();
+    int distance = await prefsService.getSearchRadius();
 
-    final stations = await _service.getGasStations(
+    final stations = await service.getGasStations(
       position.latitude,
       position.longitude,
       distance,
@@ -83,12 +83,12 @@ class AndroidAutoChannel {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-    final PreferencesService _prefsService = PreferencesService();
-    final GasStationService _service = GasStationService();
+    final PreferencesService prefsService = PreferencesService();
+    final GasStationService service = GasStationService();
 
-    int distance = await _prefsService.getSearchRadius();
+    int distance = await prefsService.getSearchRadius();
     // Qui dovresti recuperare i dati dai tuoi servizi o dal database
-    var stations = await _service.getGasStations(
+    var stations = await service.getGasStations(
       position.latitude,
       position.longitude,
       distance,
@@ -135,15 +135,15 @@ class AndroidAutoChannel {
   /// Restituisce i rifornimenti dell'utente
   static Future<List<Map<String, dynamic>>> _getRefuelings() async {
     try {
-      final PreferencesService _prefsService = PreferencesService();
+      final PreferencesService prefsService = PreferencesService();
 
-      final _selectedVehicleId = await _prefsService.getVehicles();
+      final selectedVehicleId = await prefsService.getVehicles();
 
-      if (_selectedVehicleId.first.id.isNotEmpty) {
+      if (selectedVehicleId.first.id.isNotEmpty) {
         try {
-          final CarStatsService _service = CarStatsService();
-          final data = await _service
-              .getRefuelingsByVehicle(_selectedVehicleId.first.id);
+          final CarStatsService service = CarStatsService();
+          final data =
+              await service.getRefuelingsByVehicle(selectedVehicleId.first.id);
           if (data.isEmpty) return [];
           return data
               .map((refueling) => {
@@ -159,18 +159,18 @@ class AndroidAutoChannel {
                   })
               .toList();
         } catch (e) {
-          print(
-              'Auto: Errore nel recupero dei rifornimenti dal repository: $e');
+          //print('Auto: Errore nel recupero dei rifornimenti dal repository: $e');
         }
       }
       return _createFallbackRefuelings();
     } catch (e) {
-      print('Auto: Errore nel metodo _getRefuelings: $e');
+      //print('Auto: Errore nel metodo _getRefuelings: $e');
       return _createFallbackRefuelings();
     }
   }
 
   /// Converte un oggetto rifornimento nel formato Map per il canale
+  // ignore: unused_element
   static Map<String, dynamic> _convertRefuelingToMap(dynamic refueling) {
     try {
       // Se l'oggetto è già una mappa, restituiscilo
@@ -214,7 +214,7 @@ class AndroidAutoChannel {
         'notes': null,
       };
     } catch (e) {
-      print('Auto: Errore nella conversione del rifornimento: $e');
+      //print('Auto: Errore nella conversione del rifornimento: $e');
       return {
         'id': 'error',
         'date': DateTime.now().toIso8601String(),
@@ -246,7 +246,7 @@ class AndroidAutoChannel {
       },
       {
         'id': '2',
-        'date': now.subtract(Duration(days: 7)).toIso8601String(),
+        'date': now.subtract(const Duration(days: 7)).toIso8601String(),
         'liters': 40.0,
         'pricePerLiter': 1.795,
         'kilometers': 12200.0,
@@ -257,7 +257,7 @@ class AndroidAutoChannel {
       },
       {
         'id': '3',
-        'date': now.subtract(Duration(days: 15)).toIso8601String(),
+        'date': now.subtract(const Duration(days: 15)).toIso8601String(),
         'liters': 50.0,
         'pricePerLiter': 1.659,
         'kilometers': 11850.0,
@@ -272,10 +272,10 @@ class AndroidAutoChannel {
   /// Restituisce i veicoli dell'utente
   static Future<List<Map<String, dynamic>>> _getVehicles() async {
     try {
-      final PreferencesService _prefsService = PreferencesService();
-      final vehicles = await _prefsService.getVehicles();
+      final PreferencesService prefsService = PreferencesService();
+      final vehicles = await prefsService.getVehicles();
       if (vehicles.isEmpty) {
-        print('Nessun veicolo trovato, utilizzo dati di esempio');
+        //print('Nessun veicolo trovato, utilizzo dati di esempio');
         return [];
       } else {
         return vehicles
@@ -291,12 +291,13 @@ class AndroidAutoChannel {
             .toList();
       }
     } catch (e) {
-      print('Errore nel recupero dei veicoli: $e');
+      //print('Errore nel recupero dei veicoli: $e');
       return [];
     }
   }
 
   /// Aggiunge un nuovo rifornimento
+  // ignore: unused_element
   static Future<bool> _addRefueling(Map<String, dynamic> data) async {
     return false;
   }

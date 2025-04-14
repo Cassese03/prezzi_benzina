@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:carmate/widgets/refueling_list_view.dart';
 import 'dart:core';
@@ -9,7 +11,7 @@ import '../services/preferences_service.dart';
 import '../models/vehicle.dart';
 
 class CarStatsPage extends StatefulWidget {
-  const CarStatsPage({Key? key}) : super(key: key);
+  const CarStatsPage({super.key});
 
   @override
   State<CarStatsPage> createState() => _CarStatsPageState();
@@ -20,7 +22,7 @@ class _CarStatsPageState extends State<CarStatsPage> {
   final PreferencesService _prefsService = PreferencesService();
   List<Refueling> _refuelings = [];
   Vehicle? _selectedVehicle;
-  List<Vehicle> _vehicles = [];
+  final List<Vehicle> _vehicles = [];
   Map<String, double> _statistics = {
     'totalSpent': 0,
     'averageConsumption': 0,
@@ -124,35 +126,35 @@ class _CarStatsPageState extends State<CarStatsPage> {
             const Divider(),
             ListTile(
               leading: const Icon(Icons.calendar_today),
-              title: Text('Data'),
+              title: const Text('Data'),
               subtitle: Text(DateFormat('dd/MM/yyyy').format(refueling.date)),
             ),
             ListTile(
               leading: const Icon(Icons.local_gas_station),
-              title: Text('Carburante'),
+              title: const Text('Carburante'),
               subtitle: Text(
                   '${refueling.liters.toStringAsFixed(2)} L di ${refueling.fuelType}'),
             ),
             ListTile(
               leading: const Icon(Icons.euro),
-              title: Text('Prezzo'),
+              title: const Text('Prezzo'),
               subtitle:
                   Text('€${refueling.pricePerLiter.toStringAsFixed(3)}/L'),
             ),
             ListTile(
               leading: const Icon(Icons.speed),
-              title: Text('Chilometri'),
+              title: const Text('Chilometri'),
               subtitle: Text('${refueling.kilometers.toStringAsFixed(0)} km'),
             ),
             ListTile(
               leading: const Icon(Icons.assessment),
-              title: Text('Consumo'),
+              title: const Text('Consumo'),
               subtitle:
                   Text('${refueling.consumption.toStringAsFixed(1)} L/100km'),
             ),
             ListTile(
               leading: const Icon(Icons.shopping_cart),
-              title: Text('Totale'),
+              title: const Text('Totale'),
               subtitle: Text('€${refueling.totalAmount.toStringAsFixed(2)}'),
             ),
           ],
@@ -556,11 +558,11 @@ class AddRefuelingForm extends StatefulWidget {
   final Vehicle selectedVehicle; // Aggiunto parametro richiesto
 
   const AddRefuelingForm({
-    Key? key,
+    super.key,
     required this.onSubmit,
     required this.selectedVehicle, // Aggiunto parametro richiesto
     this.initialRefueling,
-  }) : super(key: key);
+  });
 
   @override
   State<AddRefuelingForm> createState() => _AddRefuelingFormState();
@@ -691,7 +693,7 @@ class _AddRefuelingFormState extends State<AddRefuelingForm> {
                   labelText: 'Totale in Euro',
                   prefixIcon: Icon(Icons.euro),
                 ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 onChanged: (_) {
                   _calculateValues();
                 },
@@ -705,7 +707,7 @@ class _AddRefuelingFormState extends State<AddRefuelingForm> {
                   labelText: 'Litri',
                   prefixIcon: Icon(Icons.local_gas_station),
                 ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 onChanged: (_) {
                   _calculateValues();
                 },
@@ -718,7 +720,7 @@ class _AddRefuelingFormState extends State<AddRefuelingForm> {
                 labelText: 'Prezzo al litro',
                 prefixIcon: Icon(Icons.euro),
               ),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
               onChanged: (_) {
                 _calculateValues();
               },

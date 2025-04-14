@@ -7,10 +7,10 @@ class NearestStationsPage extends StatefulWidget {
   final Function(GasStation) onStationSelected;
 
   const NearestStationsPage({
-    Key? key,
+    super.key,
     required this.stations,
     required this.onStationSelected,
-  }) : super(key: key);
+  });
 
   @override
   State<NearestStationsPage> createState() => _NearestStationsPageState();
@@ -68,7 +68,7 @@ class _NearestStationsPageState extends State<NearestStationsPage> {
                   : Icons.local_gas_station,
               color: (station.tipo == 'Elettrica')
                   ? Colors.lightBlue
-                  : Color(0xFF2C3E50),
+                  : const Color(0xFF2C3E50),
               size: 28,
             ),
             title: Text(

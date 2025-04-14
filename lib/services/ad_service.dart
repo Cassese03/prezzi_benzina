@@ -36,9 +36,9 @@ class AdService {
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
-        onAdLoaded: (ad) => print('Banner caricato con successo'),
+        //onAdLoaded: (ad) => print('Banner caricato con successo'),
         onAdFailedToLoad: (ad, error) {
-          print('Errore caricamento banner: ${error.message}');
+          //print('Errore caricamento banner: ${error.message}');
           ad.dispose();
         },
       ),

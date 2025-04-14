@@ -7,10 +7,10 @@ class RefuelingListView extends StatelessWidget {
   final Function(Refueling) onTap;
 
   const RefuelingListView({
-    Key? key,
+    super.key,
     required this.refuelings,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

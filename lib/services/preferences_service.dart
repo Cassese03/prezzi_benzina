@@ -18,7 +18,7 @@ class PreferencesService {
     'Elettrica'
   ];
 
-  static const List<int> availableRadiusValues = [5, 10, 20, 30, 50];
+  static const List<int> availableRadiusValues = [10, 20, 30, 40, 50];
 
   Future<void> setPreferredFuelType(String fuelType) async {
     final prefs = await SharedPreferences.getInstance();
@@ -85,7 +85,7 @@ class PreferencesService {
 
   Future<int> getSearchRadius() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_searchRadiusKey) ?? 5; // Default 5km
+    return prefs.getInt(_searchRadiusKey) ?? 20; // Default 20km
   }
 
   Future<bool> getIsElectricModeOnly() async {

@@ -5,9 +5,9 @@ class AveragePricePage extends StatelessWidget {
   final List<GasStation> stations;
 
   const AveragePricePage({
-    Key? key,
+    super.key,
     required this.stations,
-  }) : super(key: key);
+  });
 
   Map<String, double> _calculateAveragePrices() {
     Map<String, double> sums = {};

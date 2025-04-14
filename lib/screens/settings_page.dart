@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import '../services/preferences_service.dart';
 import 'vehicles_page.dart';
@@ -5,8 +7,7 @@ import 'vehicles_page.dart';
 class SettingsPage extends StatefulWidget {
   final Function() onSettingsChanged;
 
-  const SettingsPage({Key? key, required this.onSettingsChanged})
-      : super(key: key);
+  const SettingsPage({super.key, required this.onSettingsChanged});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -15,7 +16,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final PreferencesService _prefsService = PreferencesService();
   String _selectedFuelType = 'Benzina';
-  int _searchRadius = 5;
+  int _searchRadius = 20;
   bool _isElectricModeOnly = false;
 
   @override

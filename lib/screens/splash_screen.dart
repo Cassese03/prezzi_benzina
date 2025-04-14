@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SplashScreen extends StatefulWidget {
   final bool isLoading;
 
-  const SplashScreen({Key? key, this.isLoading = false}) : super(key: key);
+  const SplashScreen({super.key, this.isLoading = false});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();

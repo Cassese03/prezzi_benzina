@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_page.dart';
 import 'package:carmate/android_auto/auto_method_channel.dart';

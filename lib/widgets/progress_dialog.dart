@@ -7,12 +7,12 @@ class ProgressDialog extends StatefulWidget {
   final bool showPercentage;
 
   const ProgressDialog({
-    Key? key,
+    super.key,
     required this.title,
     required this.message,
     required this.progress,
     this.showPercentage = true,
-  }) : super(key: key);
+  });
 
   @override
   State<ProgressDialog> createState() => _ProgressDialogState();

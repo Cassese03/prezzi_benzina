@@ -5,9 +5,9 @@ class AddVehicleDialog extends StatefulWidget {
   final Function(Vehicle) onVehicleAdded;
 
   const AddVehicleDialog({
-    Key? key,
+    super.key,
     required this.onVehicleAdded,
-  }) : super(key: key);
+  });
 
   @override
   State<AddVehicleDialog> createState() => _AddVehicleDialogState();

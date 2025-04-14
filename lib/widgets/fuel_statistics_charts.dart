@@ -9,10 +9,10 @@ class FuelStatisticsCharts extends StatefulWidget {
   final Vehicle? selectedVehicle;
 
   const FuelStatisticsCharts({
-    Key? key,
+    super.key,
     required this.refuelings,
     required this.selectedVehicle,
-  }) : super(key: key);
+  });
 
   @override
   State<FuelStatisticsCharts> createState() => _FuelStatisticsChartsState();

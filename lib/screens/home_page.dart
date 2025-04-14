@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:carmate/services/car_service.dart';
@@ -49,6 +51,11 @@ class _HomePageState extends State<HomePage> {
   // ignore: unused_field
   Vehicle? _selectedVehicle;
   // ignore: unused_field
+  late BitmapDescriptor markerBlue;
+  late BitmapDescriptor markerGreen;
+  late BitmapDescriptor markerOrange;
+  late BitmapDescriptor markerRed;
+  late BitmapDescriptor markerDefault;
   bool _isLoading = false;
   GoogleMapController? _mapController;
   Set<Marker> _markers = {};
@@ -66,10 +73,34 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _checkLocationPermission();
     _loadVehicles();
+    _loadCustomMarkers();
     _getCurrentLocation(); // Nuovo metodo per ottenere la posizione
     if (!kIsWeb) {
       _loadBannerAd();
     }
+  }
+
+  Future<void> _loadCustomMarkers() async {
+    markerBlue = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(38, 38)),
+      'assets/markers/MarkerBlu.png',
+    );
+    markerGreen = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(38, 38)),
+      'assets/markers/MarkerVerde.png',
+    );
+    markerOrange = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(38, 38)),
+      'assets/markers/MarkerArancione.png',
+    );
+    markerRed = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(38, 38)),
+      'assets/markers/MarkerRosso.png',
+    );
+    markerDefault = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(38, 38)),
+      'assets/markers/MarkerRosso.png',
+    );
   }
 
   Future<void> _checkLocationPermission() async {
@@ -180,7 +211,7 @@ class _HomePageState extends State<HomePage> {
           });
         }
       }).catchError((error) {
-        print('Errore nel caricamento del banner: $error');
+        //print('Errore nel caricamento del banner: $error');
         _isBannerAdReady = false;
         _bannerAd = null;
       });
@@ -196,28 +227,23 @@ class _HomePageState extends State<HomePage> {
           station.getLowestPrice('Benzina', selfServiceOnly: true);
 
       if (station.tipo == 'Elettrica') {
-        markerIcon =
-            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+        markerIcon = markerBlue; // usa icona blu per le colonnine
       } else {
         if (benzinaPrice != null) {
-          // Determina il colore in base al prezzo
           if (benzinaPrice < 1.8) {
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueGreen);
+            markerIcon = markerGreen;
           } else if (benzinaPrice < 2.0) {
-            markerIcon =
-                BitmapDescriptor.defaultMarkerWithHue(120); // Arancione
+            markerIcon = markerOrange;
           } else {
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(0); // Rosso
+            markerIcon = markerRed;
           }
         } else {
-          markerIcon = BitmapDescriptor.defaultMarker;
+          markerIcon = markerDefault;
         }
       }
 
       return Marker(
         markerId: MarkerId(station.id),
-        
         position: LatLng(station.latitude, station.longitude),
         icon: markerIcon,
         infoWindow: InfoWindow(
@@ -297,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                             : Icons.local_gas_station,
                         color: (station.tipo == 'Elettrica')
                             ? Colors.lightBlue
-                            : Color(0xFF2C3E50),
+                            : const Color(0xFF2C3E50),
                         size: 32,
                       ),
                     ),
@@ -328,13 +354,13 @@ class _HomePageState extends State<HomePage> {
                             : _buildFuelPriceRow('Benzina', station.fuelPrices),
                         const Divider(),
                         (station.tipo == 'Elettrica')
-                            ? Text('')
+                            ? const Text('')
                             : _buildFuelPriceRow('Gasolio', station.fuelPrices),
                         (station.tipo == 'Elettrica')
-                            ? Text('')
+                            ? const Text('')
                             : const Divider(),
                         (station.tipo == 'Elettrica')
-                            ? Text('')
+                            ? const Text('')
                             : _buildFuelPriceRow('GPL', station.fuelPrices),
                         if (station.fuelPrices.containsKey('Metano')) ...[
                           const Divider(),
@@ -452,7 +478,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              price != null ? '${price}' : 'N/D',
+              price ?? 'N/D',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             if (lastUpdate != null)
@@ -711,7 +737,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (!kIsWeb && _bannerAd != null && _isBannerAdReady)
-              Container(
+              SizedBox(
                 width: _bannerAd!.size.width.toDouble(),
                 height: _bannerAd!.size.height.toDouble(),
                 child: AdWidget(ad: _bannerAd!),
