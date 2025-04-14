@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 import 'package:carmate/services/ad_service.dart';
 import 'dart:async';
 import '../models/gas_station.dart';
-import '../models/vehicle.dart';
 import '../services/gas_station_service.dart';
 import 'nearest_stations_page.dart';
 import 'cheapest_stations_page.dart';
@@ -25,6 +24,7 @@ import 'settings_page.dart';
 import 'package:seo/seo.dart';
 import 'splash_screen.dart';
 import '../widgets/responsive_app_bar.dart';
+import '../widgets/multi_step_loading.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,30 +33,17 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-// Funzione helper per log colorati
-// void logInfo(String message) {
-//   developer.log('\x1B[33m$message\x1B[0m', name: 'HOME_PAGE');
-// }
-
-// void logError(String message) {
-//   developer.log('\x1B[31m$message\x1B[0m', name: 'HOME_PAGE_ERROR');
-// }
-
 class _HomePageState extends State<HomePage> {
   final GasStationService _service = GasStationService();
   final PreferencesService _prefsService = PreferencesService();
   List<GasStation> _stations = [];
-  // ignore: unused_field
-  List<Vehicle> _vehicles = [];
-  // ignore: unused_field
-  Vehicle? _selectedVehicle;
-  // ignore: unused_field
   late BitmapDescriptor markerBlue;
   late BitmapDescriptor markerGreen;
   late BitmapDescriptor markerOrange;
   late BitmapDescriptor markerRed;
   late BitmapDescriptor markerDefault;
   bool _isLoading = false;
+  bool _isLoadingWithSteps = false;
   GoogleMapController? _mapController;
   Set<Marker> _markers = {};
   BannerAd? _bannerAd;
@@ -65,16 +52,12 @@ class _HomePageState extends State<HomePage> {
   LatLng _currentPosition = const LatLng(0, 0); // Default position
 
   int _selectedIndex = 0;
-  // ignore: unused_field
-  double _currentSheetSize = 0.4; // Aggiungi questa proprietà
 
   @override
   void initState() {
     super.initState();
-    _checkLocationPermission();
-    _loadVehicles();
+    _isLoadingWithSteps = true;
     _loadCustomMarkers();
-    _getCurrentLocation(); // Nuovo metodo per ottenere la posizione
     if (!kIsWeb) {
       _loadBannerAd();
     }
@@ -82,79 +65,25 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadCustomMarkers() async {
     markerBlue = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(38, 38)),
+      const ImageConfiguration(size: Size(30, 38)),
       'assets/markers/MarkerBlu.png',
     );
     markerGreen = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(38, 38)),
+      const ImageConfiguration(size: Size(30, 38)),
       'assets/markers/MarkerVerde.png',
     );
     markerOrange = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(38, 38)),
+      const ImageConfiguration(size: Size(30, 38)),
       'assets/markers/MarkerArancione.png',
     );
     markerRed = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(38, 38)),
+      const ImageConfiguration(size: Size(30, 38)),
       'assets/markers/MarkerRosso.png',
     );
     markerDefault = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(38, 38)),
+      const ImageConfiguration(size: Size(30, 38)),
       'assets/markers/MarkerRosso.png',
     );
-  }
-
-  Future<void> _checkLocationPermission() async {
-    bool hasPermission =
-        await LocationPermissionDialog.checkAndRequestPermission(context);
-    if (!hasPermission) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                'L\'accesso alla posizione è necessario per mostrare le stazioni di servizio più vicine'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-    }
-  }
-
-  Future<void> _getCurrentLocation() async {
-    try {
-      setState(() => _isLoading = true);
-
-      // Richiedi il permesso di geolocalizzazione
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception('Permesso di geolocalizzazione negato');
-        }
-      }
-
-      // Ottieni la posizione corrente
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      // Aggiorna la posizione corrente
-      setState(() {
-        _currentPosition = LatLng(position.latitude, position.longitude);
-      });
-
-      // Carica le stazioni vicine
-      await _loadNearbyStations();
-    } catch (e) {
-      //  logError('Errore nella geolocalizzazione: $e');
-      // Fallback su una posizione di default o mostra un errore
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Impossibile ottenere la posizione corrente'),
-        ),
-      );
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
   }
 
   Future<void> _loadNearbyStations() async {
@@ -163,7 +92,7 @@ class _HomePageState extends State<HomePage> {
       final stations = await _service.getGasStations(
         _currentPosition.latitude,
         _currentPosition.longitude,
-        distance, // raggio in km
+        distance,
       );
 
       if (mounted && stations.isNotEmpty) {
@@ -172,14 +101,12 @@ class _HomePageState extends State<HomePage> {
           _markers = _createMarkersFromStations(stations);
         });
 
-        // Centra la mappa sulla posizione corrente
         _mapController?.animateCamera(
           CameraUpdate.newLatLngZoom(_currentPosition, 14.0),
         );
       }
-    } catch (e) {
-      //logError('Errore nel caricamento stazioni: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   @override
@@ -193,10 +120,7 @@ class _HomePageState extends State<HomePage> {
     final vehicles = await _prefsService.getVehicles();
     if (mounted) {
       setState(() {
-        _vehicles = vehicles;
-        if (vehicles.isNotEmpty) {
-          _selectedVehicle = vehicles.first;
-        }
+        if (vehicles.isNotEmpty) {}
       });
     }
   }
@@ -205,29 +129,24 @@ class _HomePageState extends State<HomePage> {
     _bannerAd = AdService.createBannerAd()
       ..load().then((value) {
         if (mounted) {
-          // Verifica che il widget sia ancora montato
           setState(() {
             _isBannerAdReady = true;
           });
         }
       }).catchError((error) {
-        //print('Errore nel caricamento del banner: $error');
         _isBannerAdReady = false;
         _bannerAd = null;
       });
   }
 
-  // Metodo per creare markers dalle stazioni
   Set<Marker> _createMarkersFromStations(List<GasStation> stations) {
     final Set<Marker> markers = stations.map((station) {
-      // Calcoliamo il colore del marker in base al prezzo
       BitmapDescriptor markerIcon;
-      // Verifica se ha un prezzo per la benzina self service
       final benzinaPrice =
           station.getLowestPrice('Benzina', selfServiceOnly: true);
 
       if (station.tipo == 'Elettrica') {
-        markerIcon = markerBlue; // usa icona blu per le colonnine
+        markerIcon = markerBlue;
       } else {
         if (benzinaPrice != null) {
           if (benzinaPrice < 1.8) {
@@ -259,7 +178,6 @@ class _HomePageState extends State<HomePage> {
     return markers;
   }
 
-  // Mostra i dettagli della stazione in un bottom sheet migliorato
   void _showStationDetails(GasStation station) {
     if (!mounted) return;
 
@@ -281,7 +199,6 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Handle per trascinare
                 Center(
                   child: Container(
                     width: 40,
@@ -293,8 +210,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                // Intestazione con nome e logo
                 Row(
                   children: [
                     Expanded(
@@ -329,16 +244,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 24),
-
-                // Prezzi carburante
                 Text(
                   'Prezzi',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
-                // Card per i prezzi dei carburanti
                 Card(
                   elevation: 2,
                   child: Padding(
@@ -370,10 +281,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
-                // Mappa statica
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.network(
@@ -408,10 +316,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
-                // Pulsanti azioni
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -430,7 +335,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Costruisce una riga per il prezzo del carburante
   Widget _buildFuelPriceRow(String fuelType, Map<String, PriceInfo> prices) {
     final price = prices[fuelType];
     if (price == null) {
@@ -492,7 +396,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Costruisce un pulsante di azione
   Widget _buildActionButton(
       {required IconData icon,
       required String label,
@@ -529,6 +432,42 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _handleLoadingComplete() {
+    setState(() {
+      _isLoadingWithSteps = false;
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _handleLocationPermissionGranted() async {
+    await _loadVehicles();
+    await Future.delayed(const Duration(milliseconds: 300));
+  }
+
+  Future<void> _fetchData(Position position) async {
+    try {
+      setState(() {
+        _currentPosition = LatLng(position.latitude, position.longitude);
+      });
+
+      await _loadNearbyStations();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Impossibile ottenere i dati'),
+          ),
+        );
+      }
+    }
+  }
+
+  void _startLoading() {
+    setState(() {
+      _isLoadingWithSteps = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SeoController(
@@ -536,7 +475,9 @@ class _HomePageState extends State<HomePage> {
       tree: WidgetTree(context: context),
       child: Scaffold(
         appBar: ResponsiveAppBar(
-          onRefresh: _getCurrentLocation,
+          onRefresh: () {
+            _startLoading();
+          },
           onSettings: () {
             Navigator.push(
               context,
@@ -554,185 +495,190 @@ class _HomePageState extends State<HomePage> {
             );
           },
         ),
-        body: _isLoading
-            ? const SplashScreen(isLoading: true)
-            : MediaQuery.of(context).size.width >
-                    MediaQuery.of(context).size.height
-                ? Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: GoogleMap(
-                          initialCameraPosition: CameraPosition(
-                            target: _currentPosition,
-                            zoom: 14,
-                          ),
-                          markers: _markers,
-                          myLocationEnabled: true,
-                          myLocationButtonEnabled: true,
-                          mapType: MapType.normal,
-                          onMapCreated: (controller) =>
-                              _mapController = controller,
-                        ),
-                      ),
-                      Expanded(
-                        child: NotificationListener<
-                            DraggableScrollableNotification>(
-                          onNotification: (notification) {
-                            setState(() {
-                              _currentSheetSize = notification.extent;
-                            });
-                            return true;
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 10,
-                                ),
-                              ],
+        body: _isLoadingWithSteps
+            ? MultiStepLoading(
+                onLocationPermissionGranted: _handleLocationPermissionGranted,
+                onFetchData: _fetchData,
+                onCompleted: _handleLoadingComplete,
+              )
+            : _isLoading
+                ? const SplashScreen(isLoading: true)
+                : MediaQuery.of(context).size.width >
+                        MediaQuery.of(context).size.height
+                    ? Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: GoogleMap(
+                              initialCameraPosition: CameraPosition(
+                                target: _currentPosition,
+                                zoom: 14,
+                              ),
+                              markers: _markers,
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: true,
+                              mapType: MapType.normal,
+                              onMapCreated: (controller) =>
+                                  _mapController = controller,
                             ),
-                            child: IndexedStack(
-                              index: _selectedIndex,
+                          ),
+                          Expanded(
+                            child: NotificationListener<
+                                DraggableScrollableNotification>(
+                              onNotification: (notification) {
+                                setState(() {});
+                                return true;
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 10,
+                                    ),
+                                  ],
+                                ),
+                                child: IndexedStack(
+                                  index: _selectedIndex,
+                                  children: [
+                                    NearestStationsPage(
+                                      stations: _stations,
+                                      onStationSelected: _selectStation,
+                                    ),
+                                    CheapestStationsPage(
+                                      stations: _stations,
+                                      onStationSelected: _selectStation,
+                                    ),
+                                    AveragePricePage(stations: _stations),
+                                    const car_stats.CarStatsPage(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Center(
+                              child: Seo.image(
+                                src:
+                                    "https://carmate-website.vercel.app/assets/assets/images/logo.png",
+                                alt: 'CarMate App Logo',
+                                child: Image.asset(
+                                  "assets/images/logo.png",
+                                ),
+                              ),
+                            ),
+                          ),
+                          Opacity(
+                            opacity: 0,
+                            child: Column(
                               children: [
-                                NearestStationsPage(
-                                  stations: _stations,
-                                  onStationSelected: _selectStation,
+                                Seo.text(
+                                  text:
+                                      'CarMate - Trova i Migliori Prezzi del Carburante',
+                                  style: TextTagStyle.h1,
+                                  child: const Text(''),
                                 ),
-                                CheapestStationsPage(
-                                  stations: _stations,
-                                  onStationSelected: _selectStation,
+                                Seo.text(
+                                  text:
+                                      'CarMate è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
+                                  style: TextTagStyle.h2,
+                                  child: const Text(''),
                                 ),
-                                AveragePricePage(stations: _stations),
-                                const car_stats.CarStatsPage(),
+                                Seo.image(
+                                  src:
+                                      "https://carmate-website.vercel.app/assets/assets/images/logo.png",
+                                  alt:
+                                      'CarMate - App per il risparmio sul carburante',
+                                  child: const SizedBox(),
+                                ),
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  )
-                : Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Center(
-                          child: Seo.image(
-                            src:
-                                "https://carmate-website.vercel.app/assets/assets/images/logo.png",
-                            alt: 'CarMate App Logo',
-                            child: Image.asset(
-                              "assets/images/logo.png",
+                          GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: _currentPosition,
+                              zoom: 14,
+                            ),
+                            markers: _markers,
+                            myLocationEnabled: true,
+                            myLocationButtonEnabled: true,
+                            mapType: MapType.normal,
+                            onMapCreated: (controller) =>
+                                _mapController = controller,
+                          ),
+                          NotificationListener<DraggableScrollableNotification>(
+                            onNotification: (notification) {
+                              setState(() {});
+                              return true;
+                            },
+                            child: DraggableScrollableSheet(
+                              initialChildSize: 0.4,
+                              minChildSize: 0.1,
+                              maxChildSize: 0.8,
+                              builder: (context, scrollController) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      IgnorePointer(
+                                        ignoring: false,
+                                        child: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          width: 40,
+                                          height: 4,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[300],
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: IndexedStack(
+                                          index: _selectedIndex,
+                                          children: [
+                                            NearestStationsPage(
+                                              stations: _stations,
+                                              onStationSelected: _selectStation,
+                                            ),
+                                            CheapestStationsPage(
+                                              stations: _stations,
+                                              onStationSelected: _selectStation,
+                                            ),
+                                            AveragePricePage(
+                                                stations: _stations),
+                                            const car_stats.CarStatsPage(),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                      Opacity(
-                        opacity: 0,
-                        child: Column(
-                          children: [
-                            Seo.text(
-                              text:
-                                  'CarMate - Trova i Migliori Prezzi del Carburante',
-                              style: TextTagStyle.h1,
-                              child: const Text(''),
-                            ),
-                            Seo.text(
-                              text:
-                                  'CarMate è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
-                              style: TextTagStyle.h2,
-                              child: const Text(''),
-                            ),
-                            Seo.image(
-                              src:
-                                  "https://carmate-website.vercel.app/assets/assets/images/logo.png",
-                              alt:
-                                  'CarMate - App per il risparmio sul carburante',
-                              child: const SizedBox(),
-                            ),
-                          ],
-                        ),
-                      ),
-                      GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          target: _currentPosition,
-                          zoom: 14,
-                        ),
-                        markers: _markers,
-                        myLocationEnabled: true,
-                        myLocationButtonEnabled: true,
-                        mapType: MapType.normal,
-                        onMapCreated: (controller) =>
-                            _mapController = controller,
-                      ),
-                      NotificationListener<DraggableScrollableNotification>(
-                        onNotification: (notification) {
-                          setState(() {
-                            _currentSheetSize = notification.extent;
-                          });
-                          return true;
-                        },
-                        child: DraggableScrollableSheet(
-                          initialChildSize: 0.4,
-                          minChildSize: 0.1,
-                          maxChildSize: 0.8,
-                          builder: (context, scrollController) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 10,
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  IgnorePointer(
-                                    ignoring: false,
-                                    child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 8),
-                                      width: 40,
-                                      height: 4,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(2),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: IndexedStack(
-                                      index: _selectedIndex,
-                                      children: [
-                                        NearestStationsPage(
-                                          stations: _stations,
-                                          onStationSelected: _selectStation,
-                                        ),
-                                        CheapestStationsPage(
-                                          stations: _stations,
-                                          onStationSelected: _selectStation,
-                                        ),
-                                        AveragePricePage(stations: _stations),
-                                        const car_stats.CarStatsPage(),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
         bottomNavigationBar: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -824,7 +770,6 @@ class LocationPermissionDialog {
             TextButton(
               child: const Text('IMPOSTAZIONI'),
               onPressed: () async {
-                // Aspetta che l'utente torni dall'app delle impostazioni
                 LocationPermission permission =
                     await Geolocator.checkPermission();
                 if (permission == LocationPermission.denied ||
