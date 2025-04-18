@@ -8,10 +8,14 @@ class AdService {
         // ID di test per sviluppo
         return 'ca-app-pub-3940256099942544/6300978111';
       }
-      // ID reale per produzione
-      return 'ca-app-pub-4250948562102925/8449028167';
+      if (defaultTargetPlatform == TargetPlatform.android) {
+        return 'ca-app-pub-4250948562102925/8449028167';
+      }
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        return 'ca-app-pub-4250948562102925/3917849650';
+      }
     }
-    return '';
+    return 'ca-app-pub-3940256099942544/6300978111';
   }
 
   static Future<void> initialize() async {

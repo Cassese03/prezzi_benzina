@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'screens/home_page.dart';
 import 'package:carmate/android_auto/auto_method_channel.dart';
+import 'services/ad_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inizializza AdMob
+  await AdService.initialize();
 
   // Inizializza il canale di comunicazione con Android Auto
   await AndroidAutoChannel.initialize();
