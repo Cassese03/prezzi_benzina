@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'dart:io';
+import 'dart:io' show Platform;
 
 import 'package:carmate/services/car_service.dart';
 import 'package:flutter/foundation.dart';
@@ -146,18 +147,31 @@ class _HomePageState extends State<HomePage> {
           station.getLowestPrice('Benzina', selfServiceOnly: true);
 
       if (station.tipo == 'Elettrica') {
-        markerIcon = markerBlue;
+        markerIcon = (!Platform.isIOS)
+            ? markerBlue
+            : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
       } else {
         if (benzinaPrice != null) {
           if (benzinaPrice < 1.8) {
-            markerIcon = markerGreen;
+            markerIcon = (!Platform.isIOS)
+                ? markerGreen
+                : BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueGreen);
           } else if (benzinaPrice < 2.0) {
-            markerIcon = markerOrange;
+            markerIcon = (!Platform.isIOS)
+                ? markerOrange
+                : BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueOrange);
           } else {
-            markerIcon = markerRed;
+            markerIcon = (!Platform.isIOS)
+                ? markerRed
+                : BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueRed);
           }
         } else {
-          markerIcon = markerDefault;
+          markerIcon = (!Platform.isIOS)
+              ? markerDefault
+              : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
         }
       }
 
