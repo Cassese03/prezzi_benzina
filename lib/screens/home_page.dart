@@ -147,29 +147,29 @@ class _HomePageState extends State<HomePage> {
           station.getLowestPrice('Benzina', selfServiceOnly: true);
 
       if (station.tipo == 'Elettrica') {
-        markerIcon = (!Platform.isIOS)
+        markerIcon = kIsWeb
             ? markerBlue
             : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
       } else {
         if (benzinaPrice != null) {
           if (benzinaPrice < 1.8) {
-            markerIcon = (!Platform.isIOS)
+            markerIcon = (kIsWeb)
                 ? markerGreen
                 : BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueGreen);
           } else if (benzinaPrice < 2.0) {
-            markerIcon = (!Platform.isIOS)
+            markerIcon = (kIsWeb)
                 ? markerOrange
                 : BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueOrange);
           } else {
-            markerIcon = (!Platform.isIOS)
+            markerIcon = (kIsWeb)
                 ? markerRed
                 : BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueRed);
           }
         } else {
-          markerIcon = (!Platform.isIOS)
+          markerIcon = (kIsWeb)
               ? markerDefault
               : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
         }
@@ -595,13 +595,13 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Seo.text(
                                   text:
-                                      'CarMate - Trova i Migliori Prezzi del Carburante',
+                                      'TankMap - Trova i Migliori Prezzi del Carburante',
                                   style: TextTagStyle.h1,
                                   child: const Text(''),
                                 ),
                                 Seo.text(
                                   text:
-                                      'CarMate è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
+                                      'TankMap è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
                                   style: TextTagStyle.h2,
                                   child: const Text(''),
                                 ),
@@ -609,7 +609,7 @@ class _HomePageState extends State<HomePage> {
                                   src:
                                       "https://carmate-website.vercel.app/assets/assets/images/logo.png",
                                   alt:
-                                      'CarMate - App per il risparmio sul carburante',
+                                      'TankMap - App per il risparmio sul carburante',
                                   child: const SizedBox(),
                                 ),
                               ],

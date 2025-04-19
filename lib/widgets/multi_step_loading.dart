@@ -244,7 +244,7 @@ class _MultiStepLoadingState extends State<MultiStepLoading>
 
                 // Titolo
                 const Text(
-                  'CarMate',
+                  'TankMap',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,

@@ -19,7 +19,7 @@
                      tools:ignore="ScopedStorage" />
     
     <application
-        android:label="CarMate"
+        android:label="TankMap"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true"

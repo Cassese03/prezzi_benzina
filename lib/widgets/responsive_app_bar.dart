@@ -28,7 +28,7 @@ class ResponsiveAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: const Center(
         child: Text(
-          'CARMATE',
+          'TANKMAP',
           style: TextStyle(
             fontFamily: 'Orbitron',
             fontWeight: FontWeight.bold,
