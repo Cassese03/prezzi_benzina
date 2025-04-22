@@ -1,8 +1,8 @@
-package com.example.carmate;
+package com.lorenzo.tankfuel;
 
 import io.flutter.app.FlutterApplication;
 import android.util.Log;
-import com.example.carmate.util.AutoConnector;
+import com.lorenzo.tankfuel.util.AutoConnector;
 
 /**
  * Classe Application principale che inizializza Android Auto

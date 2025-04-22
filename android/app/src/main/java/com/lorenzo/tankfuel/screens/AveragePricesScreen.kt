@@ -1,4 +1,4 @@
-package com.example.carmate.screens
+package com.lorenzo.tankfuel.screens
 
 import android.graphics.Color
 import android.os.Handler
@@ -7,9 +7,9 @@ import androidx.car.app.CarContext
 import androidx.car.app.Screen
 import androidx.car.app.model.*
 import android.util.Log
-import com.example.carmate.R
-import com.example.carmate.util.FlutterBridge
-import com.example.carmate.util.FuelPrice
+import com.lorenzo.tankfuel.R
+import com.lorenzo.tankfuel.util.FlutterBridge
+import com.lorenzo.tankfuel.util.FuelPrice
 import java.text.NumberFormat
 import java.util.Locale
 

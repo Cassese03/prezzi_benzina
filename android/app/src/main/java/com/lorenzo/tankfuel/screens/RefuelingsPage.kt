@@ -1,4 +1,4 @@
-package com.example.carmate.screens
+package com.lorenzo.tankfuel.screens
 
 import android.os.Handler
 import android.os.Looper
@@ -7,10 +7,10 @@ import androidx.car.app.Screen
 import androidx.car.app.model.*
 import android.util.Log
 import androidx.core.graphics.drawable.IconCompat
-import com.example.carmate.R
-import com.example.carmate.util.FlutterBridge
-import com.example.carmate.util.Refueling
-import com.example.carmate.util.Vehicle
+import com.lorenzo.tankfuel.R
+import com.lorenzo.tankfuel.util.FlutterBridge
+import com.lorenzo.tankfuel.util.Refueling
+import com.lorenzo.tankfuel.util.Vehicle
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*

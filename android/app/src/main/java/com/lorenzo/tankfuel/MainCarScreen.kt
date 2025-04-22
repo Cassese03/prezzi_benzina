@@ -3,6 +3,7 @@ package com.lorenzo.tankfuel
 import androidx.car.app.CarContext
 import androidx.car.app.Screen
 import androidx.car.app.model.*
+import androidx.core.graphics.drawable.IconCompat
 import android.util.Log
 import com.lorenzo.tankfuel.screens.AveragePricesScreen
 import com.lorenzo.tankfuel.screens.NearestStationsPage
@@ -14,77 +15,48 @@ import com.lorenzo.tankfuel.util.FlutterBridge
  */
 class MainCarScreen(carContext: CarContext) : Screen(carContext) {
     private val TAG = "MainCarScreen"
-    private val flutterBridge = FlutterBridge(carContext)
+    private val flutterBridge by lazy { FlutterBridge(carContext) }
     
     override fun onGetTemplate(): Template {
         Log.d(TAG, "Creazione template principale")
         
         val listBuilder = ItemList.Builder()
-        
-        // Opzione per distributori più vicini
-        listBuilder.addItem(
-            Row.Builder()
-                .setTitle("Distributori vicini")
-                .addText("Trova i distributori di carburante nelle vicinanze")
-                .setImage(
-                    CarIcon.Builder(
-                        IconCompat.createWithResource(
-                            carContext,
-                            R.drawable.ic_gas_station
-                        )
-                    ).build()
-                )
-                .setOnClickListener {
-                    Log.d(TAG, "Apertura schermata distributori vicini")
-                    screenManager.push(NearestStationsPage(carContext, flutterBridge))
-                }
-                .build()
-        )
-        
-        // Opzione per prezzi medi
-        listBuilder.addItem(
-            Row.Builder()
-                .setTitle("Prezzi medi carburante")
-                .addText("Visualizza i prezzi medi del carburante")
-                .setImage(
-                    CarIcon.Builder(
-                        IconCompat.createWithResource(
-                            carContext,
-                            R.drawable.ic_price_tag
-                        )
-                    ).build()
-                )
-                .setOnClickListener {
-                    Log.d(TAG, "Apertura schermata prezzi medi")
-                    screenManager.push(AveragePricesScreen(carContext, flutterBridge))
-                }
-                .build()
-        )
-        
-        // Opzione per rifornimenti
-        listBuilder.addItem(
-            Row.Builder()
-                .setTitle("I miei rifornimenti")
-                .addText("Visualizza e gestisci i rifornimenti")
-                .setImage(
-                    CarIcon.Builder(
-                        IconCompat.createWithResource(
-                            carContext,
-                            R.drawable.ic_refueling
-                        )
-                    ).build()
-                )
-                .setOnClickListener {
-                    Log.d(TAG, "Apertura schermata rifornimenti")
-                    screenManager.push(RefuelingsPage(carContext, flutterBridge))
-                }
-                .build()
-        )
-        
+            .addItem(createRow("Trova Distributori", "Cerca distributori vicino a te", R.drawable.ic_gas_station))
+            .addItem(createRow("Prezzi Medi", "Visualizza prezzi medi dei carburanti", R.drawable.ic_price_tag))
+            .addItem(createRow("Rifornimenti", "Gestisci i tuoi rifornimenti", R.drawable.ic_refueling))
+
         return ListTemplate.Builder()
-            .setTitle("TankFuel")  // Cambiato da CarMate a TankFuel
-            .setHeaderAction(Action.APP_ICON)
             .setSingleList(listBuilder.build())
+            .setTitle("TankFuel")
+            .setHeaderAction(Action.BACK)
+            .build()
+    }
+
+    private fun createRow(title: String, subtitle: String, iconResId: Int): Row {
+        return Row.Builder()
+            .setTitle(title)
+            .addText(subtitle)
+            .setImage(
+                CarIcon.Builder(
+                    IconCompat.createWithResource(carContext, iconResId)
+                ).build()
+            )
+            .setOnClickListener {
+                when (title) {
+                    "Trova Distributori" -> {
+                        Log.d(TAG, "Navigazione verso schermata Trova Distributori")
+                        screenManager.push(NearestStationsPage(carContext, flutterBridge))
+                    }
+                    "Prezzi Medi" -> {
+                        Log.d(TAG, "Navigazione verso schermata Prezzi Medi")
+                        screenManager.push(AveragePricesScreen(carContext, flutterBridge))
+                    }
+                    "Rifornimenti" -> {
+                        Log.d(TAG, "Navigazione verso schermata Rifornimenti")
+                        screenManager.push(RefuelingsPage(carContext, flutterBridge))
+                    }
+                }
+            }
             .build()
     }
 }
