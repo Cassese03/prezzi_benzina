@@ -581,8 +581,8 @@ class _HomePageState extends State<HomePage> {
                             child: Center(
                               child: Seo.image(
                                 src:
-                                    "https://carmate-website.vercel.app/assets/assets/images/logo.png",
-                                alt: 'CarMate App Logo',
+                                    "https://tank-fuel.it/assets/assets/images/logo.png",
+                                alt: 'TankFuel App Logo',
                                 child: Image.asset(
                                   "assets/images/logo.png",
                                 ),
@@ -607,7 +607,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Seo.image(
                                   src:
-                                      "https://carmate-website.vercel.app/assets/assets/images/logo.png",
+                                      "https://tank-fuel.it/assets/assets/images/logo.png",
                                   alt:
                                       'TankMap - App per il risparmio sul carburante',
                                   child: const SizedBox(),

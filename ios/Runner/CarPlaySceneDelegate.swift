@@ -27,7 +27,7 @@ class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegate {
         let vehiclesItem = CPListItem(text: "Veicoli", detailText: "Gestisci i tuoi veicoli")
         
         let section = CPListSection(items: [findGasStationsItem, averagePricesItem, refuelingsItem, vehiclesItem])
-        let template = CPListTemplate(title: "CarMate", sections: [section])
+        let template = CPListTemplate(title: "TankFuel", sections: [section])
         
         // Gestione dei tap
         template.delegate = self

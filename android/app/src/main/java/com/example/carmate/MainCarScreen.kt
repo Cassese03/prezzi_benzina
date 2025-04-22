@@ -27,7 +27,7 @@ class MainCarScreen(carContext: CarContext) : Screen(carContext) {
 
         return ListTemplate.Builder()
             .setSingleList(listBuilder.build())
-            .setTitle("CarMate")
+            .setTitle("TankFuel")
             .setHeaderAction(Action.BACK)
             .build()
     }

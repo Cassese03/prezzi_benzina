@@ -53290,7 +53290,7 @@ case 5:return A.u(null,r)
 case 1:return A.t(p,r)}})
 return A.v($async$AX,r)},
 asZ(){this.a_(new A.az6(this))},
-G(a){var s,r,q,p,o,n,m,l,k=this,j=null,i="https://carmate-website.vercel.app/assets/assets/images/logo.png",h=A.fc(j,j,j,j,!1,t.H)
+G(a){var s,r,q,p,o,n,m,l,k=this,j=null,i="https://tank-fuel.it/assets/assets/images/logo.png",h=A.fc(j,j,j,j,!1,t.H)
 if(k.as)s=new A.Er(k.gakS(),k.gahZ(),k.gakQ(),j)
 else if(k.Q)s=B.X3
 else{s=t.w
@@ -53303,7 +53303,7 @@ n=k.cx
 m=k.f
 l=k.gXz()
 r=A.d3(A.b([s,A.eQ(new A.dc(new A.azf(k),A.c9(j,A.aKg(B.bn,A.b([new A.wY(m,l,j),new A.vu(m,l,j),new A.B4(m,j),B.o5],r),n),B.l,j,j,new A.de(p.go,j,j,j,o,j,B.ao),j,j,j,j,j,j,j,j),j,q),1)],r),B.C,B.z,B.F)
-s=r}else s=A.kA(B.bn,A.b([new A.bA(B.JH,A.f4(new A.lC(new A.wq("CarMate App Logo",i),A.agX("assets/images/logo.png",j,j,j),j),j,j),j),A.St(A.c4(A.b([new A.lC(new A.yw("TankMap - Trova i Migliori Prezzi del Carburante",B.Cw),B.cZ,j),new A.lC(new A.yw("TankMap \xe8 l'app definitiva per trovare i prezzi pi\xf9 convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.",B.Cx),B.cZ,j),new A.lC(new A.wq("TankMap - App per il risparmio sul carburante",i),B.WO,j)],r),B.C,B.z,B.F),0),A.aPE(new A.on(0,k.CW,0,14),B.wi,k.ax,!0,!0,new A.azg(k)),new A.dc(new A.azh(k),A.aPa(new A.azi(k),!0,0.4,0.8,0.1),j,q)],r),B.B,B.bt,j)}r=A.b([],t.p)
+s=r}else s=A.kA(B.bn,A.b([new A.bA(B.JH,A.f4(new A.lC(new A.wq("TankFuel App Logo",i),A.agX("assets/images/logo.png",j,j,j),j),j,j),j),A.St(A.c4(A.b([new A.lC(new A.yw("TankMap - Trova i Migliori Prezzi del Carburante",B.Cw),B.cZ,j),new A.lC(new A.yw("TankMap \xe8 l'app definitiva per trovare i prezzi pi\xf9 convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.",B.Cx),B.cZ,j),new A.lC(new A.wq("TankMap - App per il risparmio sul carburante",i),B.WO,j)],r),B.C,B.z,B.F),0),A.aPE(new A.on(0,k.CW,0,14),B.wi,k.ax,!0,!0,new A.azg(k)),new A.dc(new A.azh(k),A.aPa(new A.azi(k),!0,0.4,0.8,0.1),j,q)],r),B.B,B.bt,j)}r=A.b([],t.p)
 q=k.cx
 r.push(new A.Bj(B.N7,new A.azj(k),q,B.E6,B.c0,B.bc,B.KO,B.KN,j))
 return new A.Ge(!0,new A.WQ(a,h),A.aol(new A.Uc(new A.azk(k),new A.azl(k,a),j),s,A.c4(r,B.C,B.z,B.ah),j),j)},
