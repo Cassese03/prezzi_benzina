@@ -2,14 +2,14 @@ import 'package:flutter/services.dart';
 import '../models/gas_station.dart';
 
 class CarService {
-  static const platform = MethodChannel('com.example.carmate/car');
+  static const platform = MethodChannel('com.lorenzo.fueltank/car');
 
   // Inizializza il servizio per auto
   static Future<void> initialize() async {
     try {
       await platform.invokeMethod('initializeCarService');
     } catch (e) {
-     // print('Errore inizializzazione car service: $e');
+      // print('Errore inizializzazione car service: $e');
     }
   }
 
@@ -19,7 +19,7 @@ class CarService {
       final result = await platform.invokeMethod('isRunningInCar');
       return result ?? false;
     } catch (e) {
-     //print('Error checking car interface: $e');
+      //print('Error checking car interface: $e');
       return false;
     }
   }

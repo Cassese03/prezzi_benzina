@@ -1,4 +1,4 @@
-package com.example.carmate
+package com.lorenzo.tankfuel
 
 import android.os.Bundle
 import android.util.Log

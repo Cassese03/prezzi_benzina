@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:carmate/services/car_stats_service.dart';
 import 'package:carmate/services/gas_station_service.dart';
 import 'package:carmate/services/preferences_service.dart';
@@ -6,7 +8,8 @@ import 'package:geolocator/geolocator.dart';
 
 /// Gestisce la comunicazione con Android Auto
 class AndroidAutoChannel {
-  static const _channel = MethodChannel('com.example.carmate/auto');
+  static const _channel = MethodChannel(
+      'com.lorenzo.tankfuel/auto'); // Aggiornato il nome del canale
 
   static Future<void> initialize() async {
     _channel.setMethodCallHandler(_handleMethodCall);

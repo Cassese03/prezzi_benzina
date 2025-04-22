@@ -13,7 +13,7 @@ if (localPropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.carmate"
+    namespace = "com.lorenzo.tankfuel"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -27,7 +27,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.carmate"
+        applicationId = "com.lorenzo.tankfuel"
         minSdkVersion 29  // Aumentato a 29 per Android Auto
         targetSdkVersion flutter.targetSdkVersion
         versionCode 1

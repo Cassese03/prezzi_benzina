@@ -1,4 +1,4 @@
-package com.example.carmate.util
+package com.lorenzo.tankfuel.util
 
 import android.content.Context
 import android.util.Log
@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture
  */
 class FlutterBridge(private val context: Context) {
     private val TAG = "FlutterBridge"
-    private val CHANNEL_NAME = "com.example.carmate/auto"
+    private val CHANNEL_NAME = "com.lorenzo.tankfuel/auto"
     private val ENGINE_ID = "auto_engine"
     
     private var methodChannel: MethodChannel? = null
