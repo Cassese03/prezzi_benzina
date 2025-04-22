@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '| TankMap |',
+      title: '| TankFuel |',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xFF2C3E50), // Blu petrolio

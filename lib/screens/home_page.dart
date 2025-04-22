@@ -595,13 +595,13 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Seo.text(
                                   text:
-                                      'TankMap - Trova i Migliori Prezzi del Carburante',
+                                      'TankFuel - Trova i Migliori Prezzi del Carburante',
                                   style: TextTagStyle.h1,
                                   child: const Text(''),
                                 ),
                                 Seo.text(
                                   text:
-                                      'TankMap è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
+                                      'TankFuel è l\'app definitiva per trovare i prezzi più convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.',
                                   style: TextTagStyle.h2,
                                   child: const Text(''),
                                 ),
@@ -609,7 +609,7 @@ class _HomePageState extends State<HomePage> {
                                   src:
                                       "https://tank-fuel.it/assets/assets/images/logo.png",
                                   alt:
-                                      'TankMap - App per il risparmio sul carburante',
+                                      'TankFuel - App per il risparmio sul carburante',
                                   child: const SizedBox(),
                                 ),
                               ],

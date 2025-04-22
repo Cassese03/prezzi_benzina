@@ -52747,7 +52747,7 @@ A.a8a.prototype={
 $1(a){return A.W(["id",a.a,"name",a.b,"brand",a.c,"model",a.d,"fuelType",a.e,"year",a.f,"licensePlate",a.r],t.N,t.K)},
 $S:286}
 A.Sa.prototype={
-G(a){return new A.Eg(B.Kd,"| TankMap |",A.H5(B.Dh,null,B.Gi,B.Gv,B.K3,B.bc,B.ox,B.a1C,!0),!1,null)}}
+G(a){return new A.Eg(B.Kd,"| TankFuel |",A.H5(B.Dh,null,B.Gi,B.Gv,B.K3,B.bc,B.ox,B.a1C,!0),!1,null)}}
 A.f7.prototype={
 PM(a,b){var s,r=this.y.i(0,a)
 if(r==null)return null
@@ -52900,7 +52900,7 @@ return A.v($async$$1,r)},
 $S:146}
 A.avV.prototype={
 $1(a){var s=null,r=this.a,q=this.b,p=t.p
-return A.c9(s,A.c4(A.b([A.d3(A.b([A.aF("Dettaglio Rifornimento",s,s,s,s,A.N(a).p2.r,s,s),A.d3(A.b([A.iz(s,B.pJ,s,new A.avT(r,a,q),s,s,s),A.iz(s,B.KT,s,new A.avU(r,q),s,s,s)],p),B.C,B.z,B.F)],p),B.C,B.bT,B.F),B.cl,A.fL(!1,s,s,s,!0,s,!1,B.pL,s,s,!1,s,s,s,A.aF(A.ov("dd/MM/yyyy").jE(q.b),s,s,s,s,s,s,s),s,B.a2q,s,s),A.fL(!1,s,s,s,!0,s,!1,B.df,s,s,!1,s,s,s,A.aF(B.c.a4(q.c,2)+" L di "+q.r,s,s,s,s,s,s,s),s,B.a2x,s,s),A.fL(!1,s,s,s,!0,s,!1,B.i_,s,s,!1,s,s,s,A.aF("\u20ac"+B.c.a4(q.d,3)+"/L",s,s,s,s,s,s,s),s,B.a2t,s,s),A.fL(!1,s,s,s,!0,s,!1,B.pH,s,s,!1,s,s,s,A.aF(B.c.a4(q.e,0)+" km",s,s,s,s,s,s,s),s,B.a1Z,s,s),A.fL(!1,s,s,s,!0,s,!1,B.Lb,s,s,!1,s,s,s,A.aF(B.c.a4(q.ga0h(),1)+" L/100km",s,s,s,s,s,s,s),s,B.a2l,s,s),A.fL(!1,s,s,s,!0,s,!1,B.L3,s,s,!1,s,s,s,A.aF("\u20ac"+B.c.a4(q.f,2),s,s,s,s,s,s,s),s,B.a2o,s,s)],p),B.bo,B.z,B.ah),B.l,s,s,s,s,s,s,s,B.bq,s,s,s)},
+return A.c9(s,A.c4(A.b([A.d3(A.b([A.aF("Dettaglio Rifornimento",s,s,s,s,A.N(a).p2.r,s,s),A.d3(A.b([A.iz(s,B.pJ,s,new A.avT(r,a,q),s,s,s),A.iz(s,B.KT,s,new A.avU(r,q),s,s,s)],p),B.C,B.z,B.F)],p),B.C,B.bT,B.F),B.cl,A.fL(!1,s,s,s,!0,s,!1,B.pL,s,s,!1,s,s,s,A.aF(A.ov("dd/MM/yyyy").jE(q.b),s,s,s,s,s,s,s),s,B.a2q,s,s),A.fL(!1,s,s,s,!0,s,!1,B.df,s,s,!1,s,s,s,A.aF(B.c.a4(q.c,2)+" L di "+q.r,s,s,s,s,s,s,s),s,B.a2x,s,s),A.fL(!1,s,s,s,!0,s,!1,B.i_,s,s,!1,s,s,s,A.aF("\u20ac"+B.c.a4(q.d,3)+"/L",s,s,s,s,s,s,s),s,B.a2t,s,s),A.fL(!1,s,s,s,!0,s,!1,B.pH,s,s,!1,s,s,s,A.aF(B.c.a4(q.e,0)+" km",s,s,s,s,s,s,s),s,B.a2_,s,s),A.fL(!1,s,s,s,!0,s,!1,B.Lb,s,s,!1,s,s,s,A.aF(B.c.a4(q.ga0h(),1)+" L/100km",s,s,s,s,s,s,s),s,B.a2l,s,s),A.fL(!1,s,s,s,!0,s,!1,B.L3,s,s,!1,s,s,s,A.aF("\u20ac"+B.c.a4(q.f,2),s,s,s,s,s,s,s),s,B.a2o,s,s)],p),B.bo,B.z,B.ah),B.l,s,s,s,s,s,s,s,B.bq,s,s,s)},
 $S:302}
 A.avT.prototype={
 $0(){A.db(this.b,!1).eH(null)
@@ -52927,7 +52927,7 @@ return A.v($async$$1,r)},
 $S:146}
 A.avQ.prototype={
 $1(a){var s=null
-return A.qP(A.b([A.fS(!1,B.jg,s,s,B.aw,s,s,s,s,new A.avO(a),s,s),A.fS(!1,B.Cy,s,s,B.aw,s,s,s,s,new A.avP(this.a,this.b,a),s,s)],t.p),B.a2g,B.a26)},
+return A.qP(A.b([A.fS(!1,B.jg,s,s,B.aw,s,s,s,s,new A.avO(a),s,s),A.fS(!1,B.Cy,s,s,B.aw,s,s,s,s,new A.avP(this.a,this.b,a),s,s)],t.p),B.a2h,B.a26)},
 $S:49}
 A.avO.prototype={
 $0(){A.db(this.a,!1).eH(null)
@@ -53008,7 +53008,7 @@ s=t.fo
 o.push(A.aJO(B.Lr,A.a4(new A.a1(A.b(["Benzina","Gasolio","GPL","Metano","Elettrica"],t.s),new A.atT(),s),!0,s.h("aa.E")),new A.atK(q),r,t.N))
 o.push(B.dB)
 r=A.mg(8)
-o.push(A.c9(p,A.c4(A.b([A.d3(A.b([B.a22,A.aF(B.c.a4(q.Q,0)+" km",p,p,p,p,B.a0U,p,p)],n),B.C,B.bT,B.F),B.ey,A.d3(A.b([B.a2r,A.aF(q.e.a.a,p,p,p,p,B.cx,p,p)],n),B.C,B.bT,B.F),B.ey,A.d3(A.b([B.a2e,A.aF("\u20ac"+B.c.a4(q.y,2),p,p,p,p,B.Zs,p,p)],n),B.C,B.bT,B.F)],n),B.C,B.z,B.F),B.l,p,p,new A.de(B.dU,p,p,r,p,p,B.ao),p,p,p,p,B.bq,p,p,p))
+o.push(A.c9(p,A.c4(A.b([A.d3(A.b([B.a23,A.aF(B.c.a4(q.Q,0)+" km",p,p,p,p,B.a0U,p,p)],n),B.C,B.bT,B.F),B.ey,A.d3(A.b([B.a2r,A.aF(q.e.a.a,p,p,p,p,B.cx,p,p)],n),B.C,B.bT,B.F),B.ey,A.d3(A.b([B.a2e,A.aF("\u20ac"+B.c.a4(q.y,2),p,p,p,p,B.Zs,p,p)],n),B.C,B.bT,B.F)],n),B.C,B.z,B.F),B.l,p,p,new A.de(B.dU,p,p,r,p,p,B.ao),p,p,p,p,B.bq,p,p,p))
 o.push(B.cX)
 r=A.b0d(p,p,p,p,p,p,p,p,p,p,p,p,B.bq,p,p,p,p,p,p)
 o.push(A.dw(A.b0a(!1,A.aF(q.a.d!=null?"Aggiorna":"Salva",p,p,p,p,p,p,p),p,p,B.aw,p,p,p,p,new A.atL(q,a),p,r),p,1/0))
@@ -53303,7 +53303,7 @@ n=k.cx
 m=k.f
 l=k.gXz()
 r=A.d3(A.b([s,A.eQ(new A.dc(new A.azf(k),A.c9(j,A.aKg(B.bn,A.b([new A.wY(m,l,j),new A.vu(m,l,j),new A.B4(m,j),B.o5],r),n),B.l,j,j,new A.de(p.go,j,j,j,o,j,B.ao),j,j,j,j,j,j,j,j),j,q),1)],r),B.C,B.z,B.F)
-s=r}else s=A.kA(B.bn,A.b([new A.bA(B.JH,A.f4(new A.lC(new A.wq("TankFuel App Logo",i),A.agX("assets/images/logo.png",j,j,j),j),j,j),j),A.St(A.c4(A.b([new A.lC(new A.yw("TankMap - Trova i Migliori Prezzi del Carburante",B.Cw),B.cZ,j),new A.lC(new A.yw("TankMap \xe8 l'app definitiva per trovare i prezzi pi\xf9 convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.",B.Cx),B.cZ,j),new A.lC(new A.wq("TankMap - App per il risparmio sul carburante",i),B.WO,j)],r),B.C,B.z,B.F),0),A.aPE(new A.on(0,k.CW,0,14),B.wi,k.ax,!0,!0,new A.azg(k)),new A.dc(new A.azh(k),A.aPa(new A.azi(k),!0,0.4,0.8,0.1),j,q)],r),B.B,B.bt,j)}r=A.b([],t.p)
+s=r}else s=A.kA(B.bn,A.b([new A.bA(B.JH,A.f4(new A.lC(new A.wq("TankFuel App Logo",i),A.agX("assets/images/logo.png",j,j,j),j),j,j),j),A.St(A.c4(A.b([new A.lC(new A.yw("TankFuel - Trova i Migliori Prezzi del Carburante",B.Cw),B.cZ,j),new A.lC(new A.yw("TankFuel \xe8 l'app definitiva per trovare i prezzi pi\xf9 convenienti del carburante. Confronta benzina, diesel, GPL e metano nelle stazioni di servizio vicino a te. Risparmia sui rifornimenti e gestisci i consumi dei tuoi veicoli con statistiche dettagliate.",B.Cx),B.cZ,j),new A.lC(new A.wq("TankFuel - App per il risparmio sul carburante",i),B.WO,j)],r),B.C,B.z,B.F),0),A.aPE(new A.on(0,k.CW,0,14),B.wi,k.ax,!0,!0,new A.azg(k)),new A.dc(new A.azh(k),A.aPa(new A.azi(k),!0,0.4,0.8,0.1),j,q)],r),B.B,B.bt,j)}r=A.b([],t.p)
 q=k.cx
 r.push(new A.Bj(B.N7,new A.azj(k),q,B.E6,B.c0,B.bc,B.KO,B.KN,j))
 return new A.Ge(!0,new A.WQ(a,h),A.aol(new A.Uc(new A.azk(k),new A.azl(k,a),j),s,A.c4(r,B.C,B.z,B.ah),j),j)},
@@ -53584,7 +53584,7 @@ $0(){return this.a.asC(this.b)},
 $S:0}
 A.aDo.prototype={
 $1(a){var s=t.YY
-return A.qP(null,A.c4(A.a4(new A.a1(B.NC,new A.aDn(this.a,a),s),!0,s.h("aa.E")),B.C,B.z,B.ah),B.a24)},
+return A.qP(null,A.c4(A.a4(new A.a1(B.NC,new A.aDn(this.a,a),s),!0,s.h("aa.E")),B.C,B.z,B.ah),B.a25)},
 $S:49}
 A.aDn.prototype={
 $1(a){var s=null,r=A.aF(a,s,s,s,s,s,s,s),q=this.a
@@ -53712,7 +53712,7 @@ $0(){this.a.e=this.b},
 $S:0}
 A.aFm.prototype={
 $1(a){var s=null
-return A.qP(A.b([A.fS(!1,B.a1V,s,s,B.aw,s,s,s,s,new A.aFk(a),s,s),A.fS(!1,B.a2b,s,s,B.aw,s,s,s,s,new A.aFl(a),s,s)],t.p),B.a1P,B.a29)},
+return A.qP(A.b([A.fS(!1,B.a1W,s,s,B.aw,s,s,s,s,new A.aFk(a),s,s),A.fS(!1,B.a2b,s,s,B.aw,s,s,s,s,new A.aFl(a),s,s)],t.p),B.a1P,B.a29)},
 $S:49}
 A.aFk.prototype={
 $0(){A.db(this.a,!1).eH(null)
@@ -54135,7 +54135,7 @@ aEz(a){return this.c.$1(a)}}
 A.X1.prototype={
 G(a){var s=this,r=null,q=A.lK(!0,B.b2,!1,r,!0,B.B,r,A.o7(),s.d,r,r,r,r,r,2,B.pO,B.M,!0,r,!0,r,!1,r,r,r,r,r,r,r,r,1,r,r,!1,"\u2022",r,r,r,r,r,!1,r,!1,r,!0,r,B.bQ,r,r,B.b6,B.aU,r,r,r,r,r,r,r,B.a7,r,B.bW,r,r,r,r),p=A.lK(!0,B.b2,!1,r,!0,B.B,r,A.o7(),s.e,r,r,r,r,r,2,B.pQ,B.M,!0,r,!0,r,!1,r,r,r,r,r,r,r,r,1,r,r,!1,"\u2022",r,r,r,r,r,!1,r,!1,r,!0,r,B.bQ,r,r,B.b6,B.aU,r,r,r,r,r,r,r,B.a7,r,B.bW,r,r,r,r),o=A.lK(!0,B.b2,!1,r,!0,B.B,r,A.o7(),s.f,r,r,r,r,r,2,B.pN,B.M,!0,r,!0,r,!1,r,r,r,r,r,r,r,r,1,r,r,!1,"\u2022",r,r,r,r,r,!1,r,!1,r,!0,r,B.bQ,r,r,B.b6,B.aU,r,r,r,r,r,r,r,B.a7,r,B.bW,r,r,r,r),n=A.lK(!0,B.b2,!1,r,!0,B.B,r,A.o7(),s.r,r,r,r,r,r,2,B.pR,B.M,!0,r,!0,r,!1,r,r,r,r,B.mO,r,r,r,1,r,r,!1,"\u2022",r,r,r,r,r,!1,r,!1,r,!0,r,B.bQ,r,r,B.b6,B.aU,r,r,r,r,r,r,r,B.a7,r,B.bW,r,r,r,r),m=A.lK(!0,B.b2,!1,r,!0,B.B,r,A.o7(),s.w,r,r,r,r,r,2,B.pM,B.M,!0,r,!0,r,!1,r,r,r,r,r,r,r,r,1,r,r,!1,"\u2022",r,r,r,r,r,!1,r,!1,r,!0,r,B.bQ,r,r,B.b6,B.aU,r,r,r,r,r,r,r,B.a7,r,B.bW,r,r,r,r),l=s.x,k=t.fo,j=t.p
 l=A.Gm(A.c4(A.b([q,p,o,n,m,A.aJO(B.pP,A.a4(new A.a1(A.b(["Benzina","Gasolio","GPL","Metano","Elettrica"],t.s),new A.atV(),k),!0,k.h("aa.E")),new A.atW(s),l,t.N)],j),B.C,B.z,B.ah),r,B.M,r,r,B.ab)
-return A.qP(A.b([A.fS(!1,B.jg,r,r,B.aw,r,r,r,r,new A.atX(a),r,r),A.fS(!1,B.Cz,r,r,B.aw,r,r,r,r,new A.atY(s,a),r,r)],j),l,B.a1Y)},
+return A.qP(A.b([A.fS(!1,B.jg,r,r,B.aw,r,r,r,r,new A.atX(a),r,r),A.fS(!1,B.Cz,r,r,B.aw,r,r,r,r,new A.atY(s,a),r,r)],j),l,B.a1Z)},
 m(){var s=this,r=s.d,q=r.D$=$.aq()
 r.q$=0
 r=s.e
@@ -54193,7 +54193,7 @@ r=A.b([B.a1K,B.ey],s)
 q=n.a.d
 if(q!=null){q=A.aF(q.b,m,m,m,m,A.N(a).p2.r,m,m)
 p=n.a.d
-B.b.X(r,A.b([q,A.aF(p.c+" "+p.d+" ("+p.f+")",m,m,m,m,A.N(a).p2.y,m,m)],s))}else r.push(B.a20)
+B.b.X(r,A.b([q,A.aF(p.c+" "+p.d+" ("+p.f+")",m,m,m,m,A.N(a).p2.y,m,m)],s))}else r.push(B.a21)
 k=A.c9(m,A.c4(r,B.bo,B.z,B.F),B.l,k,m,m,m,m,m,m,B.bq,m,m,1/0)
 if(n.d!=null){r=A.ov(l)
 q=n.d
@@ -54491,7 +54491,7 @@ s.d=B.OJ},
 $S:0}
 A.aAZ.prototype={
 $1(a){var s=null
-return A.qP(A.b([A.fS(!1,B.a1X,s,s,B.aw,s,s,s,s,new A.aAX(),s,s),A.fS(!1,B.a1W,s,s,B.aw,s,s,s,s,new A.aAY(this.a,a),s,s)],t.p),B.a1S,B.a2d)},
+return A.qP(A.b([A.fS(!1,B.a1Y,s,s,B.aw,s,s,s,s,new A.aAX(),s,s),A.fS(!1,B.a1X,s,s,B.aw,s,s,s,s,new A.aAY(this.a,a),s,s)],t.p),B.a1S,B.a2d)},
 $S:49}
 A.aAX.prototype={
 $0(){$.o8().Fb()},
@@ -54514,7 +54514,7 @@ q=n.d
 r=n.HP(q===B.qo,q.a>1,r,"Ricerca distributori vicini")
 q=n.r
 p=n.d
-return A.c9(o,new A.bA(B.JK,A.c4(A.b([s,B.C_,B.a25,B.ey,B.a1N,B.C_,m,B.dB,r,B.dB,n.HP(p===B.qp,p.a>2,q,"Elaborazione dati")],t.p),B.C,B.cO,B.F),o),B.l,B.j,o,o,o,o,o,o,o,o,o,1/0)},
+return A.c9(o,new A.bA(B.JK,A.c4(A.b([s,B.C_,B.a1U,B.ey,B.a1N,B.C_,m,B.dB,r,B.dB,n.HP(p===B.qp,p.a>2,q,"Elaborazione dati")],t.p),B.C,B.cO,B.F),o),B.l,B.j,o,o,o,o,o,o,o,o,o,1/0)},
 $S:418}
 A.Mo.prototype={
 m(){var s=this,r=s.aI$
@@ -113229,8 +113229,8 @@ B.Gr=new A.vw(4,null,null,null,null,null,null,null)
 B.Gk=new A.fm(B.a0,null,null,B.Gr,null)
 B.aW=new A.je(6)
 B.ZB=new A.q(!0,B.j,null,"Orbitron",null,null,24,B.aW,null,1.2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.a2h=new A.bc("TANKMAP",null,B.ZB,null,null,null,null,null,null,null)
-B.Gl=new A.fm(B.a0,null,null,B.a2h,null)
+B.a2f=new A.bc("TankFuel",null,B.ZB,null,null,null,null,null,null,null)
+B.Gl=new A.fm(B.a0,null,null,B.a2f,null)
 B.a27=new A.bc("Nessun veicolo registrato",null,null,null,null,null,null,null,null,null)
 B.Gm=new A.fm(B.a0,null,null,B.a27,null)
 B.Kt=new A.bR(57912,!1)
@@ -114031,8 +114031,8 @@ B.NF=A.b(s(["b","big","blockquote","body","br","center","code","dd","div","dl","
 B.cx=new A.q(!0,null,null,null,null,null,16,B.aW,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a2m=new A.bc("Riepilogo",null,B.cx,null,null,null,null,null,null,null)
 B.XU=new A.yj(B.a2m,null)
-B.a23=new A.bc("Rifornimenti",null,B.cx,null,null,null,null,null,null,null)
-B.XT=new A.yj(B.a23,null)
+B.a24=new A.bc("Rifornimenti",null,B.cx,null,null,null,null,null,null,null)
+B.XT=new A.yj(B.a24,null)
 B.a2i=new A.bc("Grafici",null,B.cx,null,null,null,null,null,null,null)
 B.XV=new A.yj(B.a2i,null)
 B.NI=A.b(s([B.XU,B.XT,B.XV]),t.p)
@@ -114160,10 +114160,10 @@ B.az=new A.fg(9,"counter")
 B.cz=new A.fg(10,"container")
 B.Oq=A.b(s([B.aj,B.aN,B.a8,B.aO,B.aB,B.aC,B.a2,B.as,B.aP,B.az,B.cz]),A.af("z<fg>"))
 B.lq=A.b(s(["S","M","T","W","T","F","S"]),t.s)
-B.a21=new A.bc("Litri",null,null,null,null,null,null,null,null,null)
-B.EZ=new A.mk(!1,B.df,B.a21,t.Mt)
-B.a2f=new A.bc("Totale \u20ac",null,null,null,null,null,null,null,null,null)
-B.EY=new A.mk(!0,B.i_,B.a2f,t.Mt)
+B.a22=new A.bc("Litri",null,null,null,null,null,null,null,null,null)
+B.EZ=new A.mk(!1,B.df,B.a22,t.Mt)
+B.a2g=new A.bc("Totale \u20ac",null,null,null,null,null,null,null,null,null)
+B.EY=new A.mk(!0,B.i_,B.a2g,t.Mt)
 B.Or=A.b(s([B.EZ,B.EY]),A.af("z<mk<M>>"))
 B.cb=new A.eE(1,"fuchsia")
 B.cc=new A.eE(3,"linux")
@@ -115745,10 +115745,10 @@ B.WU=new A.lE(3,"hide")
 B.a6b=new A.lE(4,"remove")
 B.C5=new A.lE(5,"timeout")
 B.WV=new A.ya(null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.a1U=new A.bc("Impossibile ottenere i dati",null,null,null,null,null,null,null,null,null)
-B.WW=new A.i6(B.a1U,null,null,null,null,null,null,null,null,null,null,null,null,B.d9,null,null,null,B.B,null)
-B.a2_=new A.bc("Rifornimento eliminato",null,null,null,null,null,null,null,null,null)
-B.WX=new A.i6(B.a2_,null,null,null,null,null,null,null,null,null,null,null,null,B.d9,null,null,null,B.B,null)
+B.a1V=new A.bc("Impossibile ottenere i dati",null,null,null,null,null,null,null,null,null)
+B.WW=new A.i6(B.a1V,null,null,null,null,null,null,null,null,null,null,null,null,B.d9,null,null,null,B.B,null)
+B.a20=new A.bc("Rifornimento eliminato",null,null,null,null,null,null,null,null,null)
+B.WX=new A.i6(B.a20,null,null,null,null,null,null,null,null,null,null,null,null,B.d9,null,null,null,B.B,null)
 B.a1Q=new A.bc("Versione Premium coming soon!",null,null,null,null,null,null,null,null,null)
 B.WY=new A.i6(B.a1Q,null,null,null,null,null,null,null,null,null,null,null,null,B.d9,null,null,null,B.B,null)
 B.a2k=new A.bc("Veicolo eliminato",null,null,null,null,null,null,null,null,null)
@@ -116166,20 +116166,20 @@ B.a1P=new A.bc("La versione standard permette di gestire un solo veicolo.\n\nPas
 B.a1R=new A.bc("I miei Veicoli",null,null,null,null,null,null,null,null,null)
 B.a1S=new A.bc("Questa app ha bisogno dei permessi di posizione per mostrarti i distributori pi\xf9 vicini. Vai nelle impostazioni dell'app per abilitare i permessi.",null,null,null,null,null,null,null,null,null)
 B.a1T=new A.bc("Modalit\xe0 solo Elettrico",null,null,null,null,null,null,null,null,null)
-B.a1V=new A.bc("OK",null,null,null,null,null,null,null,null,null)
+B.a_E=new A.q(!0,B.bc,null,null,null,null,28,B.aW,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+B.a1U=new A.bc("TankFuel",null,B.a_E,null,null,null,null,null,null,null)
+B.a1W=new A.bc("OK",null,null,null,null,null,null,null,null,null)
 B.jg=new A.bc("ANNULLA",null,null,null,null,null,null,null,null,null)
-B.a1W=new A.bc("RIPROVA",null,null,null,null,null,null,null,null,null)
-B.a1X=new A.bc("IMPOSTAZIONI",null,null,null,null,null,null,null,null,null)
-B.a1Y=new A.bc("Nuovo Veicolo",null,null,null,null,null,null,null,null,null)
-B.a1Z=new A.bc("Chilometri",null,null,null,null,null,null,null,null,null)
+B.a1X=new A.bc("RIPROVA",null,null,null,null,null,null,null,null,null)
+B.a1Y=new A.bc("IMPOSTAZIONI",null,null,null,null,null,null,null,null,null)
+B.a1Z=new A.bc("Nuovo Veicolo",null,null,null,null,null,null,null,null,null)
+B.a2_=new A.bc("Chilometri",null,null,null,null,null,null,null,null,null)
 B.K5=new A.Qv(1,"italic")
 B.a_m=new A.q(!0,B.fG,null,null,null,null,null,null,B.K5,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.a20=new A.bc("Nessun veicolo selezionato",null,B.a_m,null,null,null,null,null,null,null)
+B.a21=new A.bc("Nessun veicolo selezionato",null,B.a_m,null,null,null,null,null,null,null)
 B.Ct=new A.q(!0,null,null,null,null,null,16,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.a22=new A.bc("Chilometri percorsi:",null,B.Ct,null,null,null,null,null,null,null)
-B.a24=new A.bc("Seleziona Carburante",null,null,null,null,null,null,null,null,null)
-B.a_E=new A.q(!0,B.bc,null,null,null,null,28,B.aW,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.a25=new A.bc("TankMap",null,B.a_E,null,null,null,null,null,null,null)
+B.a23=new A.bc("Chilometri percorsi:",null,B.Ct,null,null,null,null,null,null,null)
+B.a25=new A.bc("Seleziona Carburante",null,null,null,null,null,null,null,null,null)
 B.a26=new A.bc("Conferma eliminazione",null,null,null,null,null,null,null,null,null)
 B.a29=new A.bc("Versione Standard",null,null,null,null,null,null,null,null,null)
 B.a2a=new A.bc("Impostazioni",null,null,null,null,null,null,null,null,null)
@@ -116203,7 +116203,7 @@ B.Cz=new A.bc("SALVA",null,null,null,null,null,null,null,null,null)
 B.a2d=new A.bc("Permessi Posizione",null,null,null,null,null,null,null,null,null)
 B.a_x=new A.q(!0,null,null,null,null,null,18,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a2e=new A.bc("Totale:",null,B.a_x,null,null,null,null,null,null,null)
-B.a2g=new A.bc("Vuoi davvero eliminare questo rifornimento?",null,null,null,null,null,null,null,null,null)
+B.a2h=new A.bc("Vuoi davvero eliminare questo rifornimento?",null,null,null,null,null,null,null,null,null)
 B.a2j=new A.bc("Gestisci veicoli",null,null,null,null,null,null,null,null,null)
 B.a2l=new A.bc("Consumo",null,null,null,null,null,null,null,null,null)
 B.a2n=new A.bc("Elimina Veicolo",null,null,null,null,null,null,null,null,null)

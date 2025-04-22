@@ -19,7 +19,7 @@
                      tools:ignore="ScopedStorage" />
     
     <application
-        android:label="TankMap"
+        android:label="TankFuel"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true"
